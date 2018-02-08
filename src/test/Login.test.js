@@ -8,7 +8,11 @@ configure({ adapter: new Adapter() });
 
 describe('Login component should have', () => {
   const boolWrapper = true;
-  const wrapper = shallow(<Login isLoggedIn={boolWrapper} />);
+  const fbLoginMock = jest.fn();
+  const wrapper = shallow(<Login
+    isLoggedIn={boolWrapper}
+    fbLoginClickHandler={fbLoginMock}
+  />);
   it('a wrapper for all login buttons', () => {
     expect(wrapper.find('.login-wrapper').length).toBe(1);
   });

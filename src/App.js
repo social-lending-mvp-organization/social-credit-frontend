@@ -7,7 +7,17 @@ import Login from './Login';
 import Dashboard from './Dashboard';
 
 class App extends React.Component {
-  static getTitleBar() {
+  constructor(props) {
+    super(props);
+    this.fbLoginClickHandler = this.fbLoginClickHandler.bind(this);
+
+    this.state = {
+      isLoggedIn: false,
+    };
+  }
+
+  getTitleBar() {
+    const secondaryText = this.state.isLoggedIn ? 'Welcome back' : '';
     return (
       <Grid>
         <PageHeader>
@@ -16,7 +26,7 @@ class App extends React.Component {
               <span>Social credit</span>
             </Col>
             <Col xs={8} md={8} >
-              <small>Placeholder description</small>
+              <small>{secondaryText}</small>
             </Col>
           </Row>
         </PageHeader>
@@ -24,26 +34,26 @@ class App extends React.Component {
     );
   }
 
-  static getBody() {
+  getBody() {
     return (
       <Grid>
         <Row className="show-grid">
           <Col xs={8} md={8} >
-            <Dashboard isLoggedIn={false} />
+            <Dashboard isLoggedIn={this.state.isLoggedIn} />
           </Col>
           <Col xs={4} md={4} >
-            <Login isLoggedIn={false} />
+            <Login isLoggedIn={this.state.isLoggedIn} fbLoginClickHandler={this.fbLoginClickHandler} />
           </Col>
         </Row>
       </Grid>
     );
   }
 
-  constructor(props) {
-    super(props);
-    this.isLoggedIn = false;
+  fbLoginClickHandler() {
+    this.setState({
+      isLoggedIn: !this.state.isLoggedIn,
+    });
   }
-
 
   render() {
     return (
@@ -51,12 +61,12 @@ class App extends React.Component {
         <Grid>
           <Row className="show-grid">
             <Col xs={12} md={12} >
-              {App.getTitleBar()}
+              {this.getTitleBar()}
             </Col>
           </Row>
           <Row className="show-grid">
             <Col xs={12} md={12} >
-              {App.getBody()}
+              {this.getBody()}
             </Col>
           </Row>
         </Grid>
