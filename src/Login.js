@@ -4,13 +4,11 @@ import PropTypes from 'prop-types';
 import './css/Login.css';
 
 function Login(props) {
-  //const styleProp = {
-  //  width: props.isLoggedIn ? '0vw' : '25vw',
-  //};
+  const isLoggedInText = props.isLoggedIn ? 'Logged in' : 'Not logged in';
   return (
     <div className="login-wrapper">
       <div className="login-wrapper-fb">
-        FB BUTTON
+        FB BUTTON {isLoggedInText}
       </div>
     </div>
   );

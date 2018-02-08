@@ -4,12 +4,10 @@ import PropTypes from 'prop-types';
 import './css/Dashboard.css';
 
 function Dashboard(props) {
-  //const styleProp = {
-  //  width: props.isLoggedIn ? '100vw' : '75vw',
-  //};
+  const isLoggedInText = props.isLoggedIn ? 'Logged in' : 'Not logged in';
   return (
     <div className="dashboard-wrapper">
-      DASHBOARD CONTENT
+      DASHBOARD CONTENT {isLoggedInText}
     </div>
   );
 }
