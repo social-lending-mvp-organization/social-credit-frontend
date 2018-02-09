@@ -1,0 +1,27 @@
+[
+  {
+    "Outstanding Amount":100,
+    "Paid on":"Jan-17",
+    "Due on":"Jan-17"
+  },
+  {
+    "Outstanding Amount": 90,
+    "Paid on":"Feb-17",
+    "Due on":"Feb-17"
+  },
+  {
+    "Outstanding Amount":80,
+    "Paid on":"Apr-17",
+    "Due on":"Feb-17"
+  },
+  {
+    "Outstanding Amount": 70,
+    "Paid on":"Apr-17",
+    "Due on":"Apr-17" 
+  },
+  {
+    "Outstanding Amount": 70,
+    "Paid on":"",
+    "Due on":"May-17" 
+  }
+]
