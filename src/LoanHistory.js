@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Table, Button } from 'react-bootstrap';
+import axios from 'axios';
 
 import './css/LoanHistory.css';
-import DUMMY from './dummy.json';
+
+import config from './config.json';
 
 class LoanHistory extends React.Component {
   /**
@@ -42,17 +44,36 @@ class LoanHistory extends React.Component {
       loanPaid: false,
     };
     this.payLoan = this.payLoan.bind(this);
+
+    const requestUrl = config.serverUrl + config.routes.getAllInstallments;
+    const requestObj = {
+      userid: props.userid,
+    };
+    axios.post(requestUrl, requestObj).then((response) => {
+      this.setState({
+        data: response.data,
+      });
+    });
   }
 
   payLoan() {
-    this.setState({ loanPaid: true });
+    const requestUrl = config.serverUrl + config.routes.payLoan;
+    const requestObj = {
+      userid: this.props.userid,
+      amount: 1000,
+    };
+    axios.post(requestUrl, requestObj).then((response) => {
+      this.setState({
+        loanPaid: response.data.message === 'Paid',
+      });
+    });
   }
 
   render() {
-    if (!this.props.isLoggedIn) {
+    const { data } = this.state;
+    if (!this.props.isLoggedIn || !data) {
       return (<div />);
     }
-    const data = DUMMY;
     if (this.state.loanPaid) {
       data[data.length - 1]['Paid on'] = data[data.length - 1]['Due on'];
     }
@@ -80,6 +101,7 @@ class LoanHistory extends React.Component {
 }
 LoanHistory.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
+  userid: PropTypes.string.isRequired,
 };
 
 export default LoanHistory;
