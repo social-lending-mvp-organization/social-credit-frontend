@@ -22,7 +22,7 @@ class App extends React.Component {
     // Loading Facebook SDK
     window.fbAsyncInit = function () {
       FB.init({
-        appId: 'AppID',
+        appId: 'App ID',
         cookie: true,
         xfbml: true,
         version: 'v2.12',
