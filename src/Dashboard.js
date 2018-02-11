@@ -7,7 +7,7 @@ import LoanHistory from './LoanHistory';
 
 function Dashboard(props) {
   const isLoggedInText = props.isLoggedIn ? 'Logged in' : 'Not logged in';
-  const userid = 'user1';
+  const userid = '1';
   return (
     <Panel className="dashboard-wrapper">
       <Panel.Heading>

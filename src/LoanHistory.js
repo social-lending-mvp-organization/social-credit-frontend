@@ -45,13 +45,12 @@ class LoanHistory extends React.Component {
     };
     this.payLoan = this.payLoan.bind(this);
 
-    const requestUrl = config.serverUrl + config.routes.getAllInstallments;
-    const requestObj = {
-      userid: props.userid,
-    };
-    axios.post(requestUrl, requestObj).then((response) => {
+    const requestPath = config.routes.loans.start + props.userid + config.routes.loans.end;
+    const requestUrl = config.serverUrl + requestPath;
+
+    axios.get(requestUrl).then((response) => {
       this.setState({
-        data: response.data,
+        data: response.data.data,
       });
     });
   }
