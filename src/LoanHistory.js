@@ -45,7 +45,7 @@ class LoanHistory extends React.Component {
     };
     this.payLoan = this.payLoan.bind(this);
 
-    const requestUrl = config.serverUrl + config.routes.getAllInstallments;
+    const requestUrl = config.serverUrl + config.routes.info;
     const requestObj = {
       userid: props.userid,
     };

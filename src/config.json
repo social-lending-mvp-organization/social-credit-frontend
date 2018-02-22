@@ -2,7 +2,6 @@
   "serverUrl":"http://localhost:8080",
   "routes":{
     "maxAmount":"/api/max-amount",
-    "getAllInstallments":"/api/users/get-all-installments",
-    "payLoan":"/api/users/pay-loan"
+    "info":"/api/users/info",
   }
 }
