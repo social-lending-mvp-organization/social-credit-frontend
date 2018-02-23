@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Card } from 'material-ui/Card';
+import AppBar from 'material-ui/AppBar';
 import Dialog from 'material-ui/Dialog';
 import CircularProgress from 'material-ui/CircularProgress';
 
@@ -37,9 +38,11 @@ class Dashboard extends React.Component {
             headers,
           })
             .then((userDetails) => {
-              this.setState({
-                user: userDetails.data,
-              });
+              if (userDetails.data) {
+                this.setState({
+                  user: userDetails.data,
+                });
+              }
             })
             .then(() => fetchHelper(`${facebook.profilePicture}&height=240&width=240&access_token=${this.state.accessToken}`))
             .then((data) => {
@@ -50,7 +53,7 @@ class Dashboard extends React.Component {
             })
             .then(() => {
               // Get Loans
-              fetch('/api/users/loans');
+              // fetch('/api/users/loans');
 
               this.isBusy = false;
             });
@@ -75,25 +78,34 @@ class Dashboard extends React.Component {
         </Dialog>
       </div>
       :
-      <div className="Dashboard" >
-        <Card className="Dashboard-container">
-          <div className="Dashboard-sc-section">
-            <div className="Dashboard-header">Social Score</div>
-            <div className="Dashboard-sc">{this.state.user.socialScore}</div>
-          </div>
-          {/* <LoanHistory loans={this.state.user.loans} /> */}
-        </Card>
-        <Card className="Dashboard-profile" >
-          <img
-            src={this.state.profilePicture}
-            className="Dashboard-profile-pic"
-            alt="User profile"
-          />
-          <div className="Dashboard-greeting">
-            {`Hello, ${this.state.user.firstName}`}
-          </div>
-        </Card>
-      </div >
+      <div style={{
+        height: '100%',
+      }}
+      >
+        <AppBar
+          title="Social-Credit"
+          showMenuIconButton={false}
+        />
+        <div className="Dashboard" >
+          <Card className="Dashboard-container">
+            <div className="Dashboard-sc-section">
+              <div className="Dashboard-header">Social Score</div>
+              <div className="Dashboard-sc">{this.state.user.socialScore}</div>
+            </div>
+            {/* <LoanHistory loans={this.state.user.loans} /> */}
+          </Card>
+          <Card className="Dashboard-profile" >
+            <img
+              src={this.state.profilePicture}
+              className="Dashboard-profile-pic"
+              alt="User profile"
+            />
+            <div className="Dashboard-greeting">
+              {`Hello, ${this.state.user.firstName}`}
+            </div>
+          </Card>
+        </div >
+      </div>
   );
 }
 

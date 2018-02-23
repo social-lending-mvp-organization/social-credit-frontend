@@ -27,25 +27,32 @@ const styles = {
   },
 };
 
+
 const loginHandler = () => {
-  alert('LOGIN');
+
 };
 
-const Login = () => (
-  <div className="Login" >
-    <AppBar
-      title="Social Credit"
-      showMenuIconButton={false}
-      iconElementRight={<FlatButton label="Login" onClick={loginHandler} />}
-    />
+class Login extends React.Component {
+  componentDidMount() {
 
-    <div
-      className="Login-jumbotron"
-    >
-      A new way to apply for loans
+  }
+
+  render = () => (
+    <div className="Login" >
+      <AppBar
+        title="Social-Credit"
+        showMenuIconButton={false}
+        iconElementRight={<FlatButton label="Login" onClick={() => loginHandler()} />}
+      />
+      <div
+        className="Login-jumbotron"
+      >
+        <pre className="Login-header">
+          {'A new way to\napply for loans.'}
+        </pre>
+      </div>
+
     </div>
-
-  </div>
-);
-
+  );
+}
 export default Login;
