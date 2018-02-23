@@ -1,11 +1,7 @@
 {
-  "serverUrl": "http://localhost:8080",
-  "routes": {
-    "maxAmount": "/api/max-amount",
-    "loans": {
-      "start": "/api/users/",
-      "end": "/loans"
-    },
-    "payLoan": "/api/users/pay-loan"
+  "serverUrl":"http://localhost:8080",
+  "routes":{
+    "maxAmount":"/api/max-amount",
+    "info":"/api/users/info",
   }
 }
