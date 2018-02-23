@@ -3,8 +3,7 @@ import { PageHeader, Grid, Row, Col } from 'react-bootstrap';
 
 // import logo from './media/logo.svg';
 import './css/App.css';
-import Login from './Login';
-import Dashboard from './Dashboard';
+import Login from './components/Login';
 
 class App extends React.Component {
   constructor(props) {

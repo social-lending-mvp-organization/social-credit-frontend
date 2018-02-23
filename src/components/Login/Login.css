@@ -3,3 +3,10 @@
   background-size: cover;
   height: 100vh;
 }
+
+.Login-jumbotron {
+  font-family: 'Roboto',  Helvetica, Arial, sans-serif;
+  color: #fff;
+  margin: 24px;
+  font-size: 64px; 
+}

@@ -1,13 +1,9 @@
 import React from 'react';
 
-import Paper from 'material-ui/Paper';
 import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import { GridList, GridTile } from 'material-ui/GridList';
 
 import './Login.css';
-import lorem from '../../lorem.json';
 
 // Doesnt work when exported to CSS
 const styles = {
@@ -39,27 +35,15 @@ const Login = () => (
   <div className="Login" >
     <AppBar
       title="Social Credit"
+      showMenuIconButton={false}
       iconElementRight={<FlatButton label="Login" onClick={loginHandler} />}
     />
 
-    <FloatingActionButton style={styles.fab} secondary>
-      Login
-    </FloatingActionButton>
-
-    <GridList
-      cellHeight={250}
-      style={styles.gridList}
+    <div
+      className="Login-jumbotron"
     >
-      {[0, 1, 2, 3].map(id => (
-        <GridTile
-          key={id}
-        >
-          <Paper style={styles.paper} zDepth={3} >
-            {lorem.ipsum.substring(0, 300)}
-          </Paper>
-        </GridTile>
-      ))}
-    </GridList>
+      A new way to apply for loans
+    </div>
 
   </div>
 );
