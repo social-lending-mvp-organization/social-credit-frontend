@@ -1,4 +1,5 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 
 import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
@@ -27,11 +28,6 @@ const styles = {
   },
 };
 
-
-const loginHandler = () => {
-
-};
-
 class Login extends React.Component {
   componentDidMount() {
 
@@ -42,7 +38,7 @@ class Login extends React.Component {
       <AppBar
         title="Social-Credit"
         showMenuIconButton={false}
-        iconElementRight={<FlatButton label="Login" onClick={() => loginHandler()} />}
+        iconElementRight={<FlatButton label="Login" onClick={() => this.props.fbLoginClick()} />}
       />
       <div
         className="Login-jumbotron"
@@ -55,4 +51,9 @@ class Login extends React.Component {
     </div>
   );
 }
+
+Login.propTypes = {
+  fbLoginClick: PropTypes.func.isRequired,
+};
+
 export default Login;

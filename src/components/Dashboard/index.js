@@ -5,6 +5,7 @@ import { Card } from 'material-ui/Card';
 import AppBar from 'material-ui/AppBar';
 import Dialog from 'material-ui/Dialog';
 import CircularProgress from 'material-ui/CircularProgress';
+import FlatButton from 'material-ui/FlatButton';
 
 import fetchHelper from '../../lib/fetch-helper';
 
@@ -17,7 +18,6 @@ class Dashboard extends React.Component {
 
     this.state = {
       user: undefined,
-      accessToken: this.props.accessToken,
     };
 
     this.isBusy = true;
@@ -25,7 +25,8 @@ class Dashboard extends React.Component {
 
   componentDidMount = () => {
     const headers = new Headers();
-    headers.append('accesstoken', this.state.accessToken);
+    const accessToken = localStorage.getItem('accessToken');
+    headers.append('accesstoken', accessToken);
 
     fetchHelper('/api/users/login', {
       headers,
@@ -44,7 +45,7 @@ class Dashboard extends React.Component {
                 });
               }
             })
-            .then(() => fetchHelper(`${facebook.profilePicture}&height=240&width=240&access_token=${this.state.accessToken}`))
+            .then(() => fetchHelper(`${facebook.profilePicture}&height=240&width=240&access_token=${accessToken}`))
             .then((data) => {
               this.setState(prevState => ({
                 ...prevState,
@@ -85,6 +86,16 @@ class Dashboard extends React.Component {
         <AppBar
           title="Social-Credit"
           showMenuIconButton={false}
+          iconElementRight={<FlatButton
+            label="Log out"
+            onClick={
+              () => {
+                window.FB.logout();
+                localStorage.removeItem('accessToken');
+                this.props.changeLoginState(false);
+              }
+            }
+          />}
         />
         <div className="Dashboard" >
           <Card className="Dashboard-container">
@@ -110,7 +121,7 @@ class Dashboard extends React.Component {
 }
 
 Dashboard.propTypes = {
-  accessToken: PropTypes.string.isRequired,
+  changeLoginState: PropTypes.func.isRequired,
 };
 
 export default Dashboard;
