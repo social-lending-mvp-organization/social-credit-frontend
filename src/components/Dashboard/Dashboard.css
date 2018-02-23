@@ -1,0 +1,66 @@
+.Dashboard {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+.Dashboard-container {
+  width: 60%;
+  height: 100%;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.Dashboard-profile {
+  width: 40%;
+  height: 100%;
+}
+
+.Dashboard-header {
+  font-family: 'Roboto', Helvetica, sans-serif;
+  font-size: 48px;
+  font-weight: 100;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Social Score */
+
+.Dashboard-sc-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 24px;
+}
+
+.Dashboard-user-data-dialog {
+  text-align: center;
+}
+
+.Dashboard-sc {
+  display: inline-block;
+  font-family: 'Roboto', Helvetica, sans-serif;
+  font-weight: 100;
+  font-size: 64px;
+}
+
+/* Profile */
+
+.Dashboard-profile {
+  text-align: center;
+}
+
+.Dashboard-profile-pic {
+  margin-top: 36px;
+  height: 240px;
+  width: 240px;
+  border-radius: 300px;
+  box-shadow: -2px 2px 2px #858585;
+}
+
+.Dashboard-greeting {
+  font-family: 'Roboto', Helvetica, sans-serif;
+  font-weight: 100;
+  font-size: 32px;
+  margin-top: 32px;
+}
