@@ -1,14 +1,12 @@
 .Dashboard {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   height: 100%;
 }
 
 .Dashboard-container {
-  width: 60%;
-  height: 100%;
-  padding-left: 24px;
-  padding-right: 24px;
+  display: flex;
+  flex-grow: 1;
 }
 
 .Dashboard-profile {
@@ -24,13 +22,11 @@
   vertical-align: middle;
 }
 
-/* Social Score */
-
 .Dashboard-sc-section {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding-top: 24px;
+  align-items: start;
+  width: 70%;
 }
 
 .Dashboard-user-data-dialog {
@@ -48,6 +44,7 @@
 
 .Dashboard-profile {
   text-align: center;
+  width: 30%;
 }
 
 .Dashboard-profile-pic {

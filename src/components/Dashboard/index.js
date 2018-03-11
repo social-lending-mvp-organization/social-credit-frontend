@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Card } from 'material-ui/Card';
+import { Card, CardText } from 'material-ui/Card';
 import AppBar from 'material-ui/AppBar';
 import Dialog from 'material-ui/Dialog';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -10,9 +10,12 @@ import FlatButton from 'material-ui/FlatButton';
 import fetchHelper from '../../lib/fetch-helper';
 
 import './Dashboard.css';
+import * as styles from './Dashboard.style';
+
 import { facebook } from '../../lib/constants';
 
 import ScoreBreakdown from '../ScoreBreakdown';
+import LoanHistory from '../LoanHistory';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -20,6 +23,7 @@ class Dashboard extends React.Component {
 
     this.state = {
       user: undefined,
+      loans: [],
     };
   }
 
@@ -28,38 +32,23 @@ class Dashboard extends React.Component {
     const accessToken = localStorage.getItem('accessToken');
     headers.append('accesstoken', accessToken);
 
-    const loginStatus = await fetchHelper('/api/users/login', {
-      headers,
-      method: 'POST',
-    });
+    const loginStatus = await fetchHelper('/api/users/login', { headers, method: 'POST' });
     if (loginStatus.statusCode === 200) {
-      const userDetailsResponse = await fetchHelper('/api/users/info', {
-        method: 'GET',
-        headers,
-      });
+      const userDetailsResponse = await fetchHelper('/api/users/info', { method: 'GET', headers });
       const fetchProfilePictureUrl = `${facebook.profilePicture}&height=240&width=240&access_token=${accessToken}`;
       const profilePictureResponse = await fetchHelper(fetchProfilePictureUrl);
-      this.setState({
-        user: userDetailsResponse.data,
-        profilePicture: profilePictureResponse.data.url,
-      });
-      /*
-      // TODO: Handle loans data
-      const loanResponse = await fetchHelper(/api/users/loans);
+      const loansData = await fetchHelper('/api/users/loans', { headers });
       this.setState(prevState => ({
         ...prevState,
-        loans: loanResponse.data
+        loans: loansData.data,
+        user: userDetailsResponse.data,
+        profilePicture: profilePictureResponse.data.url,
       }));
-      */
-    } else {
-      /*
-        what?
-      */
     }
   }
 
   render = () => (
-    !this.state.user ?
+    (!this.state.user || !this.state.loans) ?
       <div>
         <Dialog
           className="Dashboard-user-data-dialog"
@@ -71,10 +60,7 @@ class Dashboard extends React.Component {
         </Dialog>
       </div>
       :
-      <div style={{
-        height: '100%',
-      }}
-      >
+      <div className="Dashboard">
         <AppBar
           title="Social-Credit"
           showMenuIconButton={false}
@@ -89,15 +75,14 @@ class Dashboard extends React.Component {
             }
           />}
         />
-        <div className="Dashboard" >
-          <Card className="Dashboard-container">
-            <div className="Dashboard-sc-section">
-              <div className="Dashboard-header">Social Score</div>
-              <div className="Dashboard-sc">{this.state.user.socialScore} / 100</div>
-            </div>
-            {/* <LoanHistory loans={this.state.user.loans} /> */}
+        <div className="Dashboard-container">
+          <Card style={styles.scSection}>
+            <CardText className="Dashboard-header">Social Score</CardText>
+            <CardText className="Dashboard-sc">{this.state.user.socialScore}/100</CardText>
+            <LoanHistory loans={this.state.loans} />
+            {/* <div>{JSON.stringify(this.state.loans)}</div> */}
           </Card>
-          <Card className="Dashboard-profile" >
+          <Card className="Dashboard-profile">
             <img
               src={this.state.profilePicture}
               className="Dashboard-profile-pic"
@@ -113,7 +98,7 @@ class Dashboard extends React.Component {
               />
             </div>
           </Card>
-        </div >
+        </div>
       </div>
   );
 }
