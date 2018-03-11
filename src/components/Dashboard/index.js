@@ -44,7 +44,14 @@ class Dashboard extends React.Component {
         user: userDetailsResponse.data,
         profilePicture: profilePictureResponse.data.url,
       }));
-    }
+    } else { this.logOut(); }
+  }
+
+  logOut = () => {
+    window.FB.logout();
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('accessTokenExpiry');
+    this.props.changeLoginState(false);
   }
 
   render = () => (
@@ -52,7 +59,7 @@ class Dashboard extends React.Component {
       <div>
         <Dialog
           className="Dashboard-user-data-dialog"
-          title="Loading user data..."
+          title="Loading..."
           modal
           open
         >
@@ -66,13 +73,7 @@ class Dashboard extends React.Component {
           showMenuIconButton={false}
           iconElementRight={<FlatButton
             label="Log out"
-            onClick={
-              () => {
-                window.FB.logout();
-                localStorage.removeItem('accessToken');
-                this.props.changeLoginState(false);
-              }
-            }
+            onClick={() => this.logOut()}
           />}
         />
         <div className="Dashboard-container">

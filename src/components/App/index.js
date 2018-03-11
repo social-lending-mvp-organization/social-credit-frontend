@@ -10,8 +10,12 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
+    const accesstokenExpiry = Number(localStorage.getItem('accessTokenExpiry'));
+    const isAccessTokenValid = !isNaN(accesstokenExpiry) && accesstokenExpiry > Date.now();
+
     this.state = {
-      isLoggedIn: false,
+      isLoggedIn: isAccessTokenValid,
+      accessToken: '',
     };
 
     window.FB.init({
@@ -43,13 +47,6 @@ class App extends React.Component {
     );
   }
 
-  fetchData = (url, options) => {
-    fetch(url, options)
-      .then(response => response.text())
-      .then(response => JSON.parse(response))
-      .then(console.log);
-  }
-
   statusChangeCallback = (response) => {
     if (response.status === 'connected') {
       // Logged into your app and Facebook.
@@ -62,10 +59,12 @@ class App extends React.Component {
       }).then((res) => {
         if (res.status === 200) {
           localStorage.setItem('accessToken', response.authResponse.accessToken);
-          console.log(res);
-          this.setState({
+          localStorage.setItem('accessTokenExpiry', new Date().setHours(new Date().getHours() + 1));
+          this.setState(prevState => ({
+            ...prevState,
             isLoggedIn: true,
-          });
+            accessToken: response.authResponse.accessToken,
+          }));
         } else {
           this.setState({
             isLoggedIn: false,
@@ -109,7 +108,7 @@ class App extends React.Component {
         {this.state.isLoggedIn ?
           <Dashboard
             changeLoginState={value => this.changeLoginState(value)}
-            accessToken="EAACmZCqoZA0MABAISnJuNeqyBwE5gskM2l68juDZAPgvBo5BUgU9y8gIGk90oKdRWFBT42yJgh2PiJGLlIUyDnYFhGN8caLOKzcz1E2ubQj18eirB7R9FVlLhWkAojithS61Iia6TBSKtRDrIDfRZBSxeduQEU2Alslbf151wfcp91G40IwB4FZCpl5dTsHC9AbkczMlWJgZDZD"
+            accessToken={this.state.accessToken}
           />
           :
           <Login
