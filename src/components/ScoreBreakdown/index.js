@@ -32,11 +32,19 @@ const twitterDiv = twitterFOF => (
   </TableRow>
 );
 
+const compoundScore = (fbScore, twitterScore) => {
+  if (twitterScore) {
+    return Math.min((fbScore + twitterScore), 100);
+  }
+  return fbScore;
+};
+
 const totalDiv = (fbFriends, twitterFOF) => (
   <TableRow className="ScoreBreakdown-twitter">
     <TableRowColumn>Total</TableRowColumn>
     <TableRowColumn> - </TableRowColumn>
-    <TableRowColumn> {fbMath(fbFriends) + (twitterMath(twitterFOF) || 0)} </TableRowColumn>
+    <TableRowColumn> {compoundScore(fbMath(fbFriends), twitterMath(twitterFOF))}
+    </TableRowColumn>
   </TableRow>
 );
 
