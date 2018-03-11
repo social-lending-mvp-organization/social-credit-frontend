@@ -80,6 +80,9 @@ class Dashboard extends React.Component {
           <Card style={styles.scSection}>
             <CardText className="Dashboard-header">Social Score</CardText>
             <CardText className="Dashboard-sc">{this.state.user.socialScore}/100</CardText>
+            <br />
+            <CardText className="Dashboard-maxAmount-header">Maximum eligible Amount</CardText>
+            <CardText className="Dashboard-maxAmount">{`\u20B9 ${this.state.user.maxAmount}`}</CardText>
             <LoanHistory loans={this.state.loans} />
             {/* <div>{JSON.stringify(this.state.loans)}</div> */}
           </Card>

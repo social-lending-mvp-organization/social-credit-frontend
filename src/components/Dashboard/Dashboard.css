@@ -14,7 +14,7 @@
   height: 100%;
 }
 
-.Dashboard-header {
+.Dashboard-header, .Dashboard-maxAmount-header {
   font-family: 'Roboto', Helvetica, sans-serif;
   font-size: 48px;
   font-weight: 100;
@@ -33,7 +33,7 @@
   text-align: center;
 }
 
-.Dashboard-sc {
+.Dashboard-sc, .Dashboard-maxAmount {
   display: inline-block;
   font-family: 'Roboto', Helvetica, sans-serif;
   font-weight: 100;
