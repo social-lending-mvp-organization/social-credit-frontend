@@ -11,7 +11,7 @@ class App extends React.Component {
     super(props);
 
     const accesstokenExpiry = Number(localStorage.getItem('accessTokenExpiry'));
-    const isAccessTokenValid = !isNaN(accesstokenExpiry) && accesstokenExpiry > Date.now();
+    const isAccessTokenValid = !Number.isNaN(accesstokenExpiry) && accesstokenExpiry > Date.now();
 
     this.state = {
       isLoggedIn: isAccessTokenValid,
