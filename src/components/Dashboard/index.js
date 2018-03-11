@@ -26,7 +26,6 @@ class Dashboard extends React.Component {
       loans: [],
     };
   }
-
   componentDidMount = async () => {
     const headers = new Headers();
     const accessToken = localStorage.getItem('accessToken');
@@ -45,14 +44,14 @@ class Dashboard extends React.Component {
         profilePicture: profilePictureResponse.data.url,
       }));
     } else { this.logOut(); }
-  }
+  };
 
   logOut = () => {
     window.FB.logout();
     localStorage.removeItem('accessToken');
     localStorage.removeItem('accessTokenExpiry');
     this.props.changeLoginState(false);
-  }
+  };
 
   render = () => (
     (!this.state.user || !this.state.loans) ?
