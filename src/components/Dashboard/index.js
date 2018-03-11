@@ -21,8 +21,6 @@ class Dashboard extends React.Component {
     this.state = {
       user: undefined,
     };
-
-    this.isBusy = true;
   }
 
   componentDidMount = async () => {
@@ -53,7 +51,6 @@ class Dashboard extends React.Component {
         loans: loanResponse.data
       }));
       */
-      this.isBusy = false;
     } else {
       /*
         what?
