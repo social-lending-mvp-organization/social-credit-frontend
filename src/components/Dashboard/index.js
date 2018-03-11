@@ -12,6 +12,8 @@ import fetchHelper from '../../lib/fetch-helper';
 import './Dashboard.css';
 import { facebook } from '../../lib/constants';
 
+import ScoreBreakdown from '../ScoreBreakdown';
+
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
@@ -94,7 +96,7 @@ class Dashboard extends React.Component {
           <Card className="Dashboard-container">
             <div className="Dashboard-sc-section">
               <div className="Dashboard-header">Social Score</div>
-              <div className="Dashboard-sc">{this.state.user.socialScore}</div>
+              <div className="Dashboard-sc">{this.state.user.socialScore} / 100</div>
             </div>
             {/* <LoanHistory loans={this.state.user.loans} /> */}
           </Card>
@@ -106,6 +108,12 @@ class Dashboard extends React.Component {
             />
             <div className="Dashboard-greeting">
               {`Hello, ${this.state.user.firstName}`}
+            </div>
+            <div className="Dashboard-breakdown">
+              <ScoreBreakdown
+                fbFriends={this.state.user.fbFriends}
+                twitterFOF={this.state.user.twitterFOF}
+              />
             </div>
           </Card>
         </div >
