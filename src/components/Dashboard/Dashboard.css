@@ -17,10 +17,10 @@
 
 .Dashboard-header, .Dashboard-maxAmount-header {
   font-family: 'Roboto', Helvetica, sans-serif;
-  font-size: 48px;
   font-weight: 100;
   display: inline-block;
   vertical-align: middle;
+  font-size: 'inherit';
 }
 
 .Dashboard-main {
@@ -28,6 +28,13 @@
   justify-content: space-between;
   align-items: start;
   width: 60%;
+}
+
+/* Check js */
+.Dashboard-topRow{
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
 }
 
 .Dashboard-user-data-dialog {
@@ -38,7 +45,6 @@
   display: inline-block;
   font-family: 'Roboto', Helvetica, sans-serif;
   font-weight: 100;
-  font-size: 64px;
 }
 
 .Dashboard-profile-pic {
