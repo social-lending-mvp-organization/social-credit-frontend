@@ -12,6 +12,8 @@ import fetchHelper from '../../lib/fetch-helper';
 import './Dashboard.css';
 import { facebook } from '../../lib/constants';
 
+import ScoreBreakdown from '../ScoreBreakdown';
+
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
@@ -19,51 +21,41 @@ class Dashboard extends React.Component {
     this.state = {
       user: undefined,
     };
-
-    this.isBusy = true;
   }
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
     const headers = new Headers();
     const accessToken = localStorage.getItem('accessToken');
     headers.append('accesstoken', accessToken);
 
-    fetchHelper('/api/users/login', {
+    const loginStatus = await fetchHelper('/api/users/login', {
       headers,
       method: 'POST',
-    })
-      .then((loginStatus) => {
-        if (loginStatus.statusCode === 200) {
-          fetchHelper('/api/users/info', {
-            method: 'GET',
-            headers,
-          })
-            .then((userDetails) => {
-              if (userDetails.data) {
-                this.setState({
-                  user: userDetails.data,
-                });
-              }
-            })
-            .then(() => fetchHelper(`${facebook.profilePicture}&height=240&width=240&access_token=${accessToken}`))
-            .then((data) => {
-              this.setState(prevState => ({
-                ...prevState,
-                profilePicture: data.data.url,
-              }));
-            })
-            .then(() => {
-              // Get Loans
-              // fetch('/api/users/loans');
-
-              this.isBusy = false;
-            });
-        }
+    });
+    if (loginStatus.statusCode === 200) {
+      const userDetailsResponse = await fetchHelper('/api/users/info', {
+        method: 'GET',
+        headers,
       });
-    // Check user login
-    // Get user details
-    // Get facebook profile pic
-    // Get loans data
+      const fetchProfilePictureUrl = `${facebook.profilePicture}&height=240&width=240&access_token=${accessToken}`;
+      const profilePictureResponse = await fetchHelper(fetchProfilePictureUrl);
+      this.setState({
+        user: userDetailsResponse.data,
+        profilePicture: profilePictureResponse.data.url,
+      });
+      /*
+      // TODO: Handle loans data
+      const loanResponse = await fetchHelper(/api/users/loans);
+      this.setState(prevState => ({
+        ...prevState,
+        loans: loanResponse.data
+      }));
+      */
+    } else {
+      /*
+        what?
+      */
+    }
   }
 
   render = () => (
@@ -101,7 +93,7 @@ class Dashboard extends React.Component {
           <Card className="Dashboard-container">
             <div className="Dashboard-sc-section">
               <div className="Dashboard-header">Social Score</div>
-              <div className="Dashboard-sc">{this.state.user.socialScore}</div>
+              <div className="Dashboard-sc">{this.state.user.socialScore} / 100</div>
             </div>
             {/* <LoanHistory loans={this.state.user.loans} /> */}
           </Card>
@@ -113,6 +105,12 @@ class Dashboard extends React.Component {
             />
             <div className="Dashboard-greeting">
               {`Hello, ${this.state.user.firstName}`}
+            </div>
+            <div className="Dashboard-breakdown">
+              <ScoreBreakdown
+                fbFriends={this.state.user.fbFriends}
+                twitterFOF={this.state.user.twitterFOF}
+              />
             </div>
           </Card>
         </div >
