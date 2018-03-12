@@ -1,7 +1,8 @@
 import React from 'react';
-import { Card } from 'material-ui';
 import RaisedButton from 'material-ui/RaisedButton';
 import fetchHelper from '../../lib/fetch-helper';
+
+import * as styles from './Emi.style';
 
 const Emi = props => (
   <div style={props.loans.filter(p => p.outstandingAmount > 0).length === 0 ?
@@ -9,6 +10,7 @@ const Emi = props => (
   >
     <RaisedButton
       label="Pay EMI"
+      style={styles.EmiPayEmiButton}
       onClick={async () => {
         const loans = props.loans.filter(p => p.outstandingAmount > 0);
         if (loans.length === 1) {
