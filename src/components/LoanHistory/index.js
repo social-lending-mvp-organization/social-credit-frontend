@@ -9,10 +9,12 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
-import { FlatButton } from 'material-ui/FlatButton';
+import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
-import Slider from 'material-ui-slider-label/Slider';
+import Slider from 'material-ui/Slider';
 import { CardText } from 'material-ui/Card';
+
+import fetchHelper from '../../lib/fetch-helper';
 
 class LoanHistory extends React.Component {
   constructor(props) {
@@ -21,21 +23,67 @@ class LoanHistory extends React.Component {
     this.state = {
       applyForLoanDialog: false,
       applyForLoanButtonEnabled: true,
-      amount: 25000,
+      amount: 100000,
       installments: 12,
     };
 
     this.dialogActions = [
-      (<FlatButton
+      <FlatButton
         label="Cancel"
         primary
-      />),
-      (<FlatButton
-        label="Submit"
+        onClick={() => {
+          this.setState(prevState => ({
+            ...prevState,
+            applyForLoanDialog: false,
+            applyForLoanButtonEnabled: true,
+          }));
+        }}
+      />,
+      <FlatButton
+        label="Apply"
         primary
-        disabled
-      />),
+        onClick={async () => {
+          const headers = new Headers();
+          headers.append('accesstoken', localStorage.getItem('accessToken'));
+          headers.append('Content-Type', 'application/json');
+
+          const loansResponse = await fetchHelper('/api/users/loans', {
+            headers,
+            method: 'POST',
+            body: JSON.stringify({
+              totalAmount: this.state.amount,
+              totalInstallments: this.state.installments,
+            }),
+          });
+
+          if (loansResponse.statusCode === 201) {
+            this.props.addLoan({
+              ...loansResponse.data,
+            });
+          }
+
+          this.setState(prevState => ({
+            ...prevState,
+            applyForLoanDialog: false,
+            applyForLoanButtonEnabled: true,
+          }));
+        }}
+      />,
     ];
+  }
+
+  handleAmountSlider = (event, newValue) => {
+    this.setState(prevState => ({
+      ...prevState,
+      amount: newValue,
+    }));
+  }
+
+  handleInstallmentsSlider = (event, newValue) => {
+    this.setState(prevState => ({
+      ...prevState,
+      installments: newValue,
+    }));
   }
 
   render = () => (
@@ -69,7 +117,6 @@ class LoanHistory extends React.Component {
         :
         <div>
           <p>{'You don\'t have any loans.'}</p>
-
         </div>}
 
       <RaisedButton
@@ -89,24 +136,24 @@ class LoanHistory extends React.Component {
         title="Apply for loan"
         modal
         open={this.state.applyForLoanDialog}
+        actions={this.dialogActions}
       >
         <CardText>{`Loan Amount: ${this.state.amount}`}</CardText>
         <Slider
           step={25000}
-          min={25000}
+          min={100000}
           max={this.props.user.maxAmount}
-          label={this.state.amount}
-          onChange={(e) => {
-            this.setState(prevState => ({
-              ...prevState,
-            }));
-          }}
+          defaultValue={25000}
+          value={this.state.amount}
+          onChange={this.handleAmountSlider}
         />
+        <CardText>{`Number of EMIs: ${this.state.installments}`}</CardText>
         <Slider
-          step={12}
+          step={6}
           min={12}
           max={36}
           label={this.state.installments}
+          onChange={this.handleInstallmentsSlider}
         />
       </Dialog>
     </div>

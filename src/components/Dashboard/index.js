@@ -85,6 +85,12 @@ class Dashboard extends React.Component {
             <LoanHistory
               loans={this.state.loans}
               user={this.state.user}
+              addLoan={(newLoan) => {
+                this.setState(prevState => ({
+                  ...prevState,
+                  loans: [...prevState.loans, newLoan],
+                }));
+              }}
             />
             {/* <div>{JSON.stringify(this.state.loans)}</div> */}
           </Card>
