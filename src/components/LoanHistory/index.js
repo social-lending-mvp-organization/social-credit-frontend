@@ -16,6 +16,8 @@ import { CardText } from 'material-ui/Card';
 
 import fetchHelper from '../../lib/fetch-helper';
 
+import Emi from '../Emi';
+
 class LoanHistory extends React.Component {
   constructor(props) {
     super(props);
@@ -90,30 +92,36 @@ class LoanHistory extends React.Component {
 
     <div>
       {(this.props.loans.length > 0) ?
-        <Table>
-          <TableHeader
-            displaySelectAll={false}
-            adjustForCheckbox={false}
-            enableSelectAll={false}
-          >
-            <TableRow>
-              <TableHeaderColumn tooltip="Amount to pay back">Amount left</TableHeaderColumn>
-              <TableHeaderColumn tooltip="Amount for which loan was approved">Total Amount</TableHeaderColumn>
-              <TableHeaderColumn tooltip="Installments left">EMIs left</TableHeaderColumn>
-              <TableHeaderColumn tooltip="Status">Status</TableHeaderColumn>
-            </TableRow>
-          </TableHeader>
-          <TableBody displayRowCheckbox={false}>
-            {this.props.loans.map(loan => (
+        <div>
+          <Table>
+            <TableHeader
+              displaySelectAll={false}
+              adjustForCheckbox={false}
+              enableSelectAll={false}
+            >
               <TableRow>
-                <TableRowColumn>{`\u20B9${loan.outstandingAmount}`}</TableRowColumn>
-                <TableRowColumn>{`\u20B9${loan.totalAmount}`}</TableRowColumn>
-                <TableRowColumn>{loan.outstandingInstallments}</TableRowColumn>
-                <TableRowColumn>{loan.outstandingInstallments > 0 ? 'PENDING' : 'PAID'}</TableRowColumn>
+                <TableHeaderColumn tooltip="Amount to pay back">Amount left</TableHeaderColumn>
+                <TableHeaderColumn tooltip="Amount for which loan was approved">Total Amount</TableHeaderColumn>
+                <TableHeaderColumn tooltip="Installments left">EMIs left</TableHeaderColumn>
+                <TableHeaderColumn tooltip="Status">Status</TableHeaderColumn>
               </TableRow>
+            </TableHeader>
+            <TableBody displayRowCheckbox={false}>
+              {this.props.loans.map(loan => (
+                <TableRow>
+                  <TableRowColumn>{`\u20B9${loan.outstandingAmount}`}</TableRowColumn>
+                  <TableRowColumn>{`\u20B9${loan.totalAmount}`}</TableRowColumn>
+                  <TableRowColumn>{loan.outstandingInstallments}</TableRowColumn>
+                  <TableRowColumn>{loan.outstandingInstallments > 0 ? 'PENDING' : 'PAID'}</TableRowColumn>
+                </TableRow>
             ))}
-          </TableBody>
-        </Table>
+            </TableBody>
+          </Table>
+          <Emi
+            loans={this.props.loans}
+            payEmi={(loan) => { this.props.payEmi(loan); }}
+          />
+        </div>
         :
         <div>
           <p>{'You don\'t have any loans.'}</p>

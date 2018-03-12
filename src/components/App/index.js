@@ -47,13 +47,12 @@ class App extends React.Component {
     );
   }
 
-  addLoan = (loan) => {
-    this.setState(prevState => ({
-      ...prevState,
-      loans: [...prevState.loans, loan],
-    }));
-  }
-
+  // addLoan = (loan) => {
+  //   this.setState(prevState => ({
+  //     ...prevState,
+  //     loans: [...prevState.loans, loan],
+  //   }));
+  // }
   statusChangeCallback = (response) => {
     if (response.status === 'connected') {
       // Logged into your app and Facebook.

@@ -53,6 +53,21 @@ class Dashboard extends React.Component {
     this.props.changeLoginState(false);
   };
 
+  payEmi = (loan) => {
+    this.setState(prevState => ({
+      ...prevState,
+      loans: prevState.loans.map((p) => {
+        if (p !== loan) return p;
+        return {
+          ...p,
+          outstandingInstallments: p.outstandingInstallments - 1,
+          outstandingAmount: p.outstandingAmount -
+            (p.outstandingAmount / p.outstandingInstallments),
+        };
+      }),
+    }));
+  }
+
   render = () => (
     (!this.state.user || !this.state.loans) ?
       <div>
@@ -94,6 +109,7 @@ class Dashboard extends React.Component {
                   loans: [...prevState.loans, newLoan],
                 }));
               }}
+              payEmi={loan => this.payEmi(loan)}
             />
             {/* <div>{JSON.stringify(this.state.loans)}</div> */}
           </Card>
