@@ -6,28 +6,6 @@ import FlatButton from 'material-ui/FlatButton';
 
 import './Login.css';
 
-// Doesnt work when exported to CSS
-const styles = {
-  paper: {
-    height: 250,
-    width: 250,
-    margin: 20,
-    padding: 20,
-    textAlign: 'center',
-    display: 'inline-block',
-  },
-  gridList: {
-    width: 600,
-    height: 600,
-    overflowY: 'auto',
-  },
-  fab: {
-    marginRight: 20,
-    marginTop: '75vh',
-    float: 'right',
-  },
-};
-
 class Login extends React.Component {
   componentDidMount() {
 
@@ -43,9 +21,10 @@ class Login extends React.Component {
       <div
         className="Login-jumbotron"
       >
-        <pre className="Login-header">
-          {'A new way to\napply for loans.'}
-        </pre>
+
+        <h1 className="Login-header">
+          {'A new way to apply for loans.'}
+        </h1>
       </div>
 
     </div>

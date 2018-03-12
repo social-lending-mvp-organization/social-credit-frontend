@@ -5,15 +5,15 @@
 }
 
 .Login-jumbotron {
- 
   color: #fff;
   margin: 24px;
   margin-top: 120px;
-  font-size: 128px;
   font-weight: 100;
 }
 
 .Login-header {
   font-family: 'Roboto', Helvetica, Arial, sans-serif;
+  font-size: 4em;
+  word-wrap: break-word;
   text-shadow: -1px 1px 2px #333;
 }

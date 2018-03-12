@@ -1,53 +1,50 @@
 .Dashboard {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   height: 100%;
 }
 
 .Dashboard-container {
-  width: 60%;
-  height: 100%;
-  padding-left: 24px;
-  padding-right: 24px;
+  display: flex;
+  flex-grow: 1;
 }
 
 .Dashboard-profile {
+  text-align: center;
   width: 40%;
-  height: 100%;
+  height: inherit;
 }
 
-.Dashboard-header {
+.Dashboard-header, .Dashboard-maxAmount-header {
   font-family: 'Roboto', Helvetica, sans-serif;
-  font-size: 48px;
   font-weight: 100;
   display: inline-block;
   vertical-align: middle;
+  font-size: 'inherit';
 }
 
-/* Social Score */
-
-.Dashboard-sc-section {
+.Dashboard-main {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding-top: 24px;
+  align-items: start;
+  width: 60%;
+}
+
+/* Check js */
+.Dashboard-topRow{
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
 }
 
 .Dashboard-user-data-dialog {
   text-align: center;
 }
 
-.Dashboard-sc {
+.Dashboard-sc, .Dashboard-maxAmount {
   display: inline-block;
   font-family: 'Roboto', Helvetica, sans-serif;
   font-weight: 100;
-  font-size: 64px;
-}
-
-/* Profile */
-
-.Dashboard-profile {
-  text-align: center;
 }
 
 .Dashboard-profile-pic {
@@ -70,4 +67,19 @@
   font-weight: 100;
   font-size: 32px;
   margin-top: 32px;
+}
+
+@media only screen and (max-width: 1100px) {
+  .Dashboard-container {
+    flex-direction: column;
+  }
+
+  .Dashboard-main {
+    width: 100%;
+  }
+
+  .Dashboard-profile {
+    width: 100%;    
+    padding-bottom: 32px;
+  }
 }
