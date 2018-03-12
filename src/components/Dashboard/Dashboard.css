@@ -12,7 +12,7 @@
 .Dashboard-profile {
   text-align: center;
   width: 40%;
-  height: 100%;
+  height: inherit;
 }
 
 .Dashboard-header, .Dashboard-maxAmount-header {
