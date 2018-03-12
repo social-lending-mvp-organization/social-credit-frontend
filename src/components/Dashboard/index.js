@@ -77,11 +77,14 @@ class Dashboard extends React.Component {
         />
         <div className="Dashboard-container">
           <Card className="Dashboard-main">
-            <CardText className="Dashboard-header">Social Score</CardText>
-            <CardText className="Dashboard-sc">{this.state.user.socialScore}/100</CardText>
-            <br />
-            <CardText className="Dashboard-maxAmount-header">Maximum eligible Amount</CardText>
-            <CardText className="Dashboard-maxAmount">{`\u20B9 ${this.state.user.maxAmount}`}</CardText>
+            <div className="Dashboard-topRow" style={styles.DashboardTopRow}>
+              <CardText className="Dashboard-header" style={styles.DashboardHeader}>Social Score</CardText>
+              <CardText className="Dashboard-sc" style={styles.DashboardSC}>{this.state.user.socialScore}/100</CardText>
+            </div>
+            <div className="Dashboard-secondRow" style={styles.DashboardSecondRow}>
+              <CardText className="Dashboard-maxAmount-header" style={styles.DashboardMaxAmountHeader}>Maximum eligible Amount</CardText>
+              <CardText className="Dashboard-maxAmount" style={styles.DashboardMaxAmount}>{`\u20B9 ${this.state.user.maxAmount}`}</CardText>
+            </div>
             <LoanHistory
               loans={this.state.loans}
               user={this.state.user}
