@@ -11,6 +11,8 @@ import {
 import RaisedButton from 'material-ui/RaisedButton';
 import { FlatButton } from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
+import Slider from 'material-ui-slider-label/Slider';
+import { CardText } from 'material-ui/Card';
 
 class LoanHistory extends React.Component {
   constructor(props) {
@@ -19,6 +21,8 @@ class LoanHistory extends React.Component {
     this.state = {
       applyForLoanDialog: false,
       applyForLoanButtonEnabled: true,
+      amount: 25000,
+      installments: 12,
     };
 
     this.dialogActions = [
@@ -45,9 +49,9 @@ class LoanHistory extends React.Component {
             enableSelectAll={false}
           >
             <TableRow>
-              <TableHeaderColumn tooltip="Amount to pay back">Outstanding Amount</TableHeaderColumn>
-              <TableHeaderColumn tooltip="Amount for which loan was approved">Loan Amount</TableHeaderColumn>
-              <TableHeaderColumn tooltip="Installments left">Outstanding Installments</TableHeaderColumn>
+              <TableHeaderColumn tooltip="Amount to pay back">Amount left</TableHeaderColumn>
+              <TableHeaderColumn tooltip="Amount for which loan was approved">Total Amount</TableHeaderColumn>
+              <TableHeaderColumn tooltip="Installments left">EMIs left</TableHeaderColumn>
               <TableHeaderColumn tooltip="Status">Status</TableHeaderColumn>
             </TableRow>
           </TableHeader>
@@ -85,7 +89,26 @@ class LoanHistory extends React.Component {
         title="Apply for loan"
         modal
         open={this.state.applyForLoanDialog}
-      />
+      >
+        <CardText>{`Loan Amount: ${this.state.amount}`}</CardText>
+        <Slider
+          step={25000}
+          min={25000}
+          max={this.props.user.maxAmount}
+          label={this.state.amount}
+          onChange={(e) => {
+            this.setState(prevState => ({
+              ...prevState,
+            }));
+          }}
+        />
+        <Slider
+          step={12}
+          min={12}
+          max={36}
+          label={this.state.installments}
+        />
+      </Dialog>
     </div>
   );
 }
@@ -99,6 +122,7 @@ LoanHistory.propTypes = {
     totalInstallments: PropTypes.number,
     emis: PropTypes.object,
   })).isRequired,
+  user: PropTypes.object.isRequired,
 };
 
 export default LoanHistory;

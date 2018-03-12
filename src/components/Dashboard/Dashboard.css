@@ -10,6 +10,7 @@
 }
 
 .Dashboard-profile {
+  text-align: center;
   width: 40%;
   height: 100%;
 }
@@ -22,11 +23,11 @@
   vertical-align: middle;
 }
 
-.Dashboard-sc-section {
+.Dashboard-main {
   display: flex;
   justify-content: space-between;
   align-items: start;
-  width: 70%;
+  width: 60%;
 }
 
 .Dashboard-user-data-dialog {
@@ -38,13 +39,6 @@
   font-family: 'Roboto', Helvetica, sans-serif;
   font-weight: 100;
   font-size: 64px;
-}
-
-/* Profile */
-
-.Dashboard-profile {
-  text-align: center;
-  width: 30%;
 }
 
 .Dashboard-profile-pic {
@@ -67,4 +61,19 @@
   font-weight: 100;
   font-size: 32px;
   margin-top: 32px;
+}
+
+@media only screen and (max-width: 1100px) {
+  .Dashboard-container {
+    flex-direction: column;
+  }
+
+  .Dashboard-main {
+    width: 100%;
+  }
+
+  .Dashboard-profile {
+    width: 100%;    
+    padding-bottom: 32px;
+  }
 }

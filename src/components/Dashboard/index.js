@@ -76,13 +76,16 @@ class Dashboard extends React.Component {
           />}
         />
         <div className="Dashboard-container">
-          <Card style={styles.scSection}>
+          <Card className="Dashboard-main">
             <CardText className="Dashboard-header">Social Score</CardText>
             <CardText className="Dashboard-sc">{this.state.user.socialScore}/100</CardText>
             <br />
             <CardText className="Dashboard-maxAmount-header">Maximum eligible Amount</CardText>
             <CardText className="Dashboard-maxAmount">{`\u20B9 ${this.state.user.maxAmount}`}</CardText>
-            <LoanHistory loans={this.state.loans} />
+            <LoanHistory
+              loans={this.state.loans}
+              user={this.state.user}
+            />
             {/* <div>{JSON.stringify(this.state.loans)}</div> */}
           </Card>
           <Card className="Dashboard-profile">
