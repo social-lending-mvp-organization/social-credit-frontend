@@ -21,11 +21,15 @@ export const DashboardSC = {
   padding: 0,
 };
 
+export const DashboardMain = {
+  width: '100%',
+};
+
 export const DashboardSecondRow = {
   display: 'flex',
   justifyContent: 'space-between',
   flexFlow: 'row',
-  fontSize: '1.5em',
+  fontSize: '2em',
   padding: '24px',
 };
 

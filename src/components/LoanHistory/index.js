@@ -15,6 +15,7 @@ import Slider from 'material-ui/Slider';
 import { CardText } from 'material-ui/Card';
 
 import fetchHelper from '../../lib/fetch-helper';
+import * as styles from './styles';
 
 import Emi from '../Emi';
 
@@ -28,6 +29,7 @@ class LoanHistory extends React.Component {
       amount: 100000,
       installments: 12,
     };
+    this.SPACE = ' ';
 
     this.dialogActions = [
       <FlatButton
@@ -114,7 +116,7 @@ class LoanHistory extends React.Component {
                   <TableRowColumn>{loan.outstandingInstallments}</TableRowColumn>
                   <TableRowColumn>{loan.outstandingInstallments > 0 ? 'PENDING' : 'PAID'}</TableRowColumn>
                 </TableRow>
-            ))}
+              ))}
             </TableBody>
           </Table>
           <Emi
@@ -125,12 +127,27 @@ class LoanHistory extends React.Component {
         :
         <div>
           <p>{'You don\'t have any loans.'}</p>
+          <Table>
+            <TableHeader
+              displaySelectAll={false}
+              adjustForCheckbox={false}
+              enableSelectAll={false}
+              style={{ height: 0, padding: 0 }}
+            >
+              <TableRow >
+                <TableHeaderColumn>{this.SPACE}</TableHeaderColumn>
+                <TableHeaderColumn>{this.SPACE}</TableHeaderColumn>
+                <TableHeaderColumn>{this.SPACE}</TableHeaderColumn>
+                <TableHeaderColumn>{this.SPACE}</TableHeaderColumn>
+              </TableRow>
+            </TableHeader>
+          </Table>
         </div>}
 
       <RaisedButton
         label="Apply for loan"
         style={this.props.loans.filter(p => p.outstandingInstallments > 0).length > 0 ?
-          { display: 'none' } : {}}
+          { display: 'none' } : styles.applyForLoanButton}
         disabled={!this.state.applyForLoanButtonEnabled}
         onClick={() => {
           this.setState(prevState => ({
@@ -178,6 +195,8 @@ LoanHistory.propTypes = {
     emis: PropTypes.object,
   })).isRequired,
   user: PropTypes.object.isRequired,
+  addLoan: PropTypes.func.isRequired,
+  payEmi: PropTypes.func.isRequired,
 };
 
 export default LoanHistory;
