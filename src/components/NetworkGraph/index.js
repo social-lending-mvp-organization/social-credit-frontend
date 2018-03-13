@@ -21,7 +21,7 @@ class NetworkGraph extends React.Component {
 
   componentDidMount = async () => {
     const json = await fetchHelper(`${twitter.twitterGraph}${this.props.screenName}`);
-    const width = 960;
+    const width = 500;
     const height = 500;
     const svg = d3.select('svg')// .append("svg")
       .attr('width', width)
@@ -89,7 +89,6 @@ class NetworkGraph extends React.Component {
     <div style={styles.NetworkGraph} >
       <svg id="canvas" width="1024" height="1024">
         {this.getAllPatterns()}
-
       </svg>
     </div>
   );
