@@ -16,19 +16,19 @@ const fbMath = n => Math.floor(n / 50);
 const C = 60;
 const twitterMath = n => Math.floor(((n / (C * C)) * 100) / 2);
 
-const fbDiv = fbFriends => (
+const fbDiv = facebookBreakDown => (
   <TableRow className="ScoreBreakdown-FB">
     <TableRowColumn>Facebook friends</TableRowColumn>
-    <TableRowColumn> {fbFriends} </TableRowColumn>
-    <TableRowColumn> {fbMath(fbFriends)} </TableRowColumn>
+    <TableRowColumn> {facebookBreakDown.friendsCount} </TableRowColumn>
+    <TableRowColumn> {facebookBreakDown.impact} </TableRowColumn>
   </TableRow>
 );
 
-const twitterDiv = twitterFOF => (
+const twitterDiv = twitterBreakDown => (
   <TableRow className="ScoreBreakdown-twitter">
     <TableRowColumn>Twitter followers of followers</TableRowColumn>
-    <TableRowColumn> {twitterFOF} </TableRowColumn>
-    <TableRowColumn> {twitterMath(twitterFOF)} </TableRowColumn>
+    <TableRowColumn> {twitterBreakDown.secondFollowersCount} </TableRowColumn>
+    <TableRowColumn> {twitterBreakDown.impact} </TableRowColumn>
   </TableRow>
 );
 
@@ -39,11 +39,11 @@ const compoundScore = (fbScore, twitterScore) => {
   return fbScore;
 };
 
-const totalDiv = (fbFriends, twitterFOF) => (
+const totalDiv = breakDown => (
   <TableRow className="ScoreBreakdown-twitter">
     <TableRowColumn>Total</TableRowColumn>
     <TableRowColumn> - </TableRowColumn>
-    <TableRowColumn> {compoundScore(fbMath(fbFriends), twitterMath(twitterFOF))}
+    <TableRowColumn> {breakDown.facebook.impact + breakDown.twitter.impact}
     </TableRowColumn>
   </TableRow>
 );
@@ -58,11 +58,11 @@ const ScoreBreakdown = props => (
       </TableRow>
     </TableHeader>
     <TableBody displayRowCheckbox={false}>
-      {fbDiv(props.fbFriends)}
-      {props.twitterFOF ? twitterDiv(props.twitterFOF) : null}
+      {fbDiv(props.breakDown.facebook)}
+      {props.breakDown.twitter ? twitterDiv(props.breakDown.twitter) : null}
     </TableBody>
     <TableFooter adjustForCheckbox={false}>
-      {totalDiv(props.fbFriends, props.twitterFOF)}
+      {totalDiv(props.breakDown)}
     </TableFooter>
   </Table >
 );
