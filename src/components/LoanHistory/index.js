@@ -26,7 +26,7 @@ class LoanHistory extends React.Component {
     this.state = {
       applyForLoanDialog: false,
       applyForLoanButtonEnabled: true,
-      amount: 100000,
+      amount: 25000,
       installments: 12,
     };
     this.SPACE = ' ';
@@ -166,7 +166,7 @@ class LoanHistory extends React.Component {
         <CardText>{`Loan Amount: ${this.state.amount}`}</CardText>
         <Slider
           step={25000}
-          min={100000}
+          min={25000}
           max={this.props.user.maxAmount}
           defaultValue={25000}
           value={this.state.amount}

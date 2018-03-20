@@ -122,11 +122,35 @@ class Dashboard extends React.Component {
             <div className="Dashboard-greeting">
               {`Hello, ${this.state.user.firstName}`}
             </div>
+            {(this.state.user.breakDown.twitter.followersCount === 0) ?
+              <a
+                href={`http://localhost:8080/api/auth/twitter?accessToken=${localStorage.getItem('accessToken')}`}
+                style={styles.twitterConnect}
+              >
+                <div style={{
+                  display: 'flex',
+                }}
+                >
+                  <img
+                    src="https://upload.wikimedia.org/wikipedia/fr/c/c8/Twitter_Bird.svg"
+                    style={{
+                      height: '24px',
+                      width: '24px',
+                    }}
+                    alt="twitter logo"
+                  />
+                  <span style={{
+                    alignSelf: 'center',
+                    fontWeight: '100',
+                    paddingLeft: '8px',
+                    textTransform: 'uppercase',
+                  }}
+                  >Connect Twitter
+                  </span>
+                </div>
+              </a> : undefined}
             <div className="Dashboard-breakdown">
-              <ScoreBreakdown
-                fbFriends={this.state.user.fbFriends}
-                twitterFOF={this.state.user.twitterFOF}
-              />
+              <ScoreBreakdown breakDown={this.state.user.breakDown} />
             </div>
           </Card>
         </div>

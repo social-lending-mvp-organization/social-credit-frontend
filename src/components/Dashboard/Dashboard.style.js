@@ -46,4 +46,12 @@ export const DashboardMaxAmount = {
   padding: 0,
 };
 
-export default scSection;
+export const twitterConnect = {
+  textDecoration: 'none',
+  display: 'inline-block',
+  padding: '8px',
+  backgroundColor: '#c8cbd1',
+  borderRadius: '2px',
+  marginTop: '16px',
+  color: '#000',
+};
