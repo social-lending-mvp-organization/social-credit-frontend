@@ -20,12 +20,13 @@ class NetworkGraph extends React.Component {
   }
 
   componentDidMount = async () => {
-    const json = await fetchHelper(`${twitter.twitterGraph}${this.props.screenName}`);
     const width = 500;
     const height = 500;
     const svg = d3.select('svg')// .append("svg")
       .attr('width', width)
       .attr('height', height);
+    const json = await fetchHelper(`${twitter.twitterGraph}${this.props.screenName}`);
+
     const force = d3.layout.force()
       .gravity(0)// .05)
       .distance(100)
