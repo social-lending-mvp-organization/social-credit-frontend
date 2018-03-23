@@ -94,7 +94,7 @@ class Dashboard extends React.Component {
           <Card className="Dashboard-main" style={styles.DashboardMain}>
             <div className="Dashboard-topRow" style={styles.DashboardTopRow}>
               <CardText className="Dashboard-header" style={styles.DashboardHeader}>Social Score</CardText>
-              <CardText className="Dashboard-sc" style={styles.DashboardSC}>{this.state.user.socialScore}/100</CardText>
+              <CardText className="Dashboard-sc" style={styles.DashboardSC}>{this.state.user.socialScore}/1000</CardText>
             </div>
             <div className="Dashboard-secondRow" style={styles.DashboardSecondRow}>
               <CardText className="Dashboard-maxAmount-header" style={styles.DashboardMaxAmountHeader}>Maximum eligible Amount</CardText>
