@@ -13,7 +13,6 @@
     "material-ui-slider-label": "git+https://github.com/tariqwest/material-ui-slider-label.git",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
-    "react-colorscales": "^0.4.3",
     "react-bootstrap": "^0.32.1",
     "react-dom": "^16.2.0",
     "react-router": "^4.2.0",

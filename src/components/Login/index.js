@@ -44,7 +44,7 @@ class Login extends React.Component {
         </Navbar>
 
         <div className="Login-modal">
-          <p className="Login-modal-title">A new way to apply for loans</p>
+          <p className="Login-modal-title">A new way to apply for loans.</p>
           <div className="Login-modal-container">
             <div className="walkthrough-steps-image" />
             <div className="Login-steps">
@@ -52,10 +52,10 @@ class Login extends React.Component {
                 Connect your social media accounts.
               </p>
               <p>
-                Get your scoial score.
+                Get your social score.
               </p>
               <p>
-                Apply for loan.
+                Apply for your loan.
               </p>
             </div>
           </div>
