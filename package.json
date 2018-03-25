@@ -7,12 +7,17 @@
     "@vx/gradient": "0.0.153",
     "@vx/responsive": "0.0.158",
     "@vx/scale": "0.0.153",
+    "auth0-js": "^9.4.1",
+    "history": "^4.7.2",
     "material-ui": "^0.20.0",
     "material-ui-slider-label": "git+https://github.com/tariqwest/material-ui-slider-label.git",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-colorscales": "^0.4.3",
+    "react-bootstrap": "^0.32.1",
     "react-dom": "^16.2.0",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.0"
   },
   "scripts": {
