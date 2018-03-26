@@ -29,7 +29,6 @@ class App extends React.Component {
   render = () => (
     // First banner page
     <Switch>
-      {/* <Route path="/" exact render={props => <App auth={auth} {...props} />} /> */}
       <Route path="/" exact render={props => <Container auth={auth} {...props} />} />
       <Route path="/login" render={props => <Login auth={auth} {...props} />} />
       <Route

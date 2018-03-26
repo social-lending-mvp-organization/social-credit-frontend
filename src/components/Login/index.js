@@ -1,10 +1,8 @@
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Navbar, Nav, NavItem, Button } from 'react-bootstrap';
+import { Navbar, Nav } from 'react-bootstrap';
 
 import './Login.css';
-
 
 class Login extends React.Component {
   login = () => {

@@ -7,12 +7,14 @@ import { Link } from 'react-router-dom';
 import fetchHelper from '../../lib/fetch-helper';
 import { app } from '../../lib/constants';
 
-import './Container.css';
+import './Dashboard.css';
+import * as styles from './Dashboard.style';
 
-import NetworkGraph from '../NetworkGraph';
+import ScoreBreakdown from '../ScoreBreakdown';
+import LoanHistory from '../LoanHistory';
 
 
-class Container extends React.Component {
+class Dashboard extends React.Component {
   constructor(props) {
     super(props);
 
@@ -63,6 +65,7 @@ class Container extends React.Component {
           isBusy: true,
           message: 'Retrieving loan details...',
         }), async () => {
+          const p = 3;
           const userProfile = await this.props.auth.userInfo();
 
           const loanHeaders = new Headers();
@@ -100,7 +103,7 @@ class Container extends React.Component {
 
     if (!isAuthenticated) this.props.history.replace('/login');
     return (
-      <div className="Container">
+      <div className="Dashboard">
         {this.state.isBusy ?
           <Modal.Dialog>
             <Modal.Header>
@@ -140,9 +143,6 @@ class Container extends React.Component {
                   <Row>
                     <Col>Your social score</Col>
                     <Col>{this.state.user.socialScore}</Col>
-
-                    <NetworkGraph screenName={this.state.user.breakDown.twitter.screenName} />
-
                   </Row>
                   <Row>
                     <Col>Maximum loan amount</Col>
@@ -164,8 +164,8 @@ class Container extends React.Component {
   };
 }
 
-Container.propTypes = {
+Dashboard.propTypes = {
   changeLoginState: PropTypes.func.isRequired,
 };
 
-export default withRouter(Container);
+export default withRouter(Dashboard);
