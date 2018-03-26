@@ -1,38 +1,50 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import { withRouter } from 'react-router-dom';
+import { Navbar, Nav, NavItem, Button } from 'react-bootstrap';
 
-import AppBar from 'material-ui/AppBar';
-import FlatButton from 'material-ui/FlatButton';
-
-import './Login.css';
+// import './Login.css';
+import * as styles from './Login.style';
 
 class Login extends React.Component {
-  componentDidMount() {
-
+  login = () => {
+    this.props.auth.login();
+    this.props.history.replace('/');
   }
 
-  render = () => (
-    <div className="Login" >
-      <AppBar
-        title="Social-Credit"
-        showMenuIconButton={false}
-        iconElementRight={<FlatButton label="Login" onClick={() => this.props.fbLoginClick()} />}
-      />
-      <div
-        className="Login-jumbotron"
-      >
+  logout = () => {
+    this.props.auth.logout(this.props.history);
+  }
 
-        <h1 className="Login-header">
-          {'A new way to apply for loans.'}
-        </h1>
-      </div>
+  render = () => {
+    const isAuthenticated = this.props.auth.isAuthenticate();
 
-    </div>
-  );
+    if (isAuthenticated) this.props.history.replace('/');
+    return (
+      <div>
+        <Navbar
+          fluid
+          style={styles.navBar}
+          className="bg-primary navbar-dark"
+        >
+          <Navbar.Header>
+            <Navbar.Brand>
+              <a href="/">Social Credit</a>
+            </Navbar.Brand>
+          </Navbar.Header>
+          <Nav pullRight>
+            <Navbar.Link
+              bsStyle="primary"
+              className="btn-margin"
+              onClick={() => this.login()}
+            >
+                  Log In
+            </Navbar.Link>
+          </Nav>
+        </Navbar>
+      </div >
+    );
+  }
 }
 
-Login.propTypes = {
-  fbLoginClick: PropTypes.func.isRequired,
-};
-
-export default Login;
+export default withRouter(Login);

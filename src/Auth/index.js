@@ -1,4 +1,5 @@
 import auth0 from 'auth0-js';
+import { app } from '../lib/constants';
 
 export default class Auth {
   auth0 = new auth0.WebAuth({
@@ -29,18 +30,18 @@ export default class Auth {
   setSession = (authResult, history) => {
     // Set the time that the Access Token will expire at
     const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
-    sessionStorage.setItem('access_token', authResult.accessToken);
-    sessionStorage.setItem('id_token', authResult.idToken);
-    sessionStorage.setItem('expires_at', expiresAt);
+    sessionStorage.setItem(app.accessToken, authResult.accessToken);
+    sessionStorage.setItem(app.idToken, authResult.idToken);
+    sessionStorage.setItem(app.expiresAt, expiresAt);
     // navigate to the home route
     history.replace('/');
   }
 
   logout = (history) => {
     // Clear Access Token and ID Token from local storage
-    sessionStorage.removeItem('access_token');
-    sessionStorage.removeItem('id_token');
-    sessionStorage.removeItem('expires_at');
+    sessionStorage.removeItem(app.accessToken);
+    sessionStorage.removeItem(app.idToken);
+    sessionStorage.removeItem(app.expiresAt);
     // navigate to the home route
     history.replace('/');
   }
@@ -48,7 +49,15 @@ export default class Auth {
   isAuthenticate = () => {
     // Check whether the current time is past the
     // Access Token's expiry time
-    const expiresAt = JSON.parse(sessionStorage.getItem('expires_at'));
+    const expiresAt = JSON.parse(sessionStorage.getItem(app.expiresAt));
     return new Date().getTime() < expiresAt;
   }
+
+  userInfo = async () => new Promise((resolve, reject) => {
+    const accessToken = sessionStorage.getItem(app.accessToken);
+    this.auth0.client.userInfo(accessToken, (error, data) => {
+      if (error) reject(error);
+      resolve(data);
+    });
+  });
 }

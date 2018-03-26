@@ -16,7 +16,7 @@ const Emi = props => (
         if (loans.length === 1) {
           const loan = loans[0];
           const headers = new Headers();
-          headers.append('accesstoken', localStorage.getItem('accessToken'));
+          headers.append('accesstoken', sessionStorage.getItem('accessToken'));
 
 
           const payEmiResponse = await fetchHelper('/api/users/emi', {
