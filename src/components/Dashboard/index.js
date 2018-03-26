@@ -1,57 +1,87 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-import { Card, CardText } from 'material-ui/Card';
-import AppBar from 'material-ui/AppBar';
-import Dialog from 'material-ui/Dialog';
-import CircularProgress from 'material-ui/CircularProgress';
-import FlatButton from 'material-ui/FlatButton';
+import { Col, Grid, Image, Modal, Navbar, Nav, Row } from 'react-bootstrap';
+import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import fetchHelper from '../../lib/fetch-helper';
+import { app } from '../../lib/constants';
 
 import './Dashboard.css';
 import * as styles from './Dashboard.style';
 
-import { facebook } from '../../lib/constants';
-
 import ScoreBreakdown from '../ScoreBreakdown';
 import LoanHistory from '../LoanHistory';
+
 
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      isBusy: true,
+      message: '',
       user: undefined,
       loans: [],
     };
   }
   componentDidMount = async () => {
-    const headers = new Headers();
-    const accessToken = localStorage.getItem('accessToken');
-    headers.append('accesstoken', accessToken);
+    this.setState(prevState => ({
+      ...prevState,
+      isBusy: true,
+      message: 'Logging you in...',
+    }), async () => {
+      const loginHeaders = new Headers();
+      const accessToken = sessionStorage.getItem(app.accessToken);
+      loginHeaders.append(app.accessToken, accessToken);
 
-    const loginStatus = await fetchHelper('/api/users/login', { headers, method: 'POST' });
-    if (loginStatus.statusCode === 200) {
-      const userDetailsResponse = await fetchHelper('/api/users/info', { method: 'GET', headers });
-      const fetchProfilePictureUrl = `${facebook.profilePicture}&height=240&width=240&access_token=${accessToken}`;
-      const profilePictureResponse = await fetchHelper(fetchProfilePictureUrl);
-      const loansData = await fetchHelper('/api/users/loans', { headers });
+      const loginStatus = await fetchHelper('/api/users/login', {
+        headers: loginHeaders,
+        method: 'POST',
+      });
+
+      if (loginStatus.statusCode !== 200) {
+        this.props.auth.logout(this.props.history);
+      }
+
+      const { apiToken } = loginStatus;
+      sessionStorage.setItem(app.apiToken, apiToken);
+
       this.setState(prevState => ({
         ...prevState,
-        loans: loansData.data,
-        user: userDetailsResponse.data,
-        profilePicture: profilePictureResponse.data.url,
-      }));
-    } else { this.logOut(); }
-  };
+        isBusy: true,
+        message: 'Calculating your social score...',
+      }), async () => {
+        const infoHeaders = new Headers();
+        infoHeaders.append(app.accessToken, sessionStorage.getItem(app.apiToken));
 
-  logOut = () => {
-    window.FB.logout();
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('accessTokenExpiry');
-    this.props.changeLoginState(false);
-  };
+        const userDetailsResponse = await fetchHelper('/api/users/info', {
+          method: 'GET',
+          headers: infoHeaders,
+        });
+
+        this.setState(prevState => ({
+          ...prevState,
+          isBusy: true,
+          message: 'Retrieving loan details...',
+        }), async () => {
+          const p = 3;
+          const userProfile = await this.props.auth.userInfo();
+
+          const loanHeaders = new Headers();
+          loanHeaders.append(app.accessToken, sessionStorage.getItem(app.apiToken));
+          const loansData = await fetchHelper('/api/users/loans', { headers: loanHeaders });
+          this.setState(prevState => ({
+            ...prevState,
+            isBusy: false,
+            loans: loansData.data,
+            user: userDetailsResponse.data,
+            userProfile,
+          }));
+        });
+      });
+    });
+  }
 
   payEmi = (loan) => {
     this.setState(prevState => ({
@@ -66,100 +96,76 @@ class Dashboard extends React.Component {
         };
       }),
     }));
-  }
+  };
 
-  render = () => (
-    (!this.state.user || !this.state.loans) ?
-      <div>
-        <Dialog
-          className="Dashboard-user-data-dialog"
-          title="Loading..."
-          modal
-          open
-        >
-          <CircularProgress size={80} thickness={5} />
-        </Dialog>
-      </div>
-      :
+  render = () => {
+    const isAuthenticated = this.props.auth.isAuthenticate();
+
+    if (!isAuthenticated) this.props.history.replace('/login');
+    return (
       <div className="Dashboard">
-        <AppBar
-          title="Social-Credit"
-          showMenuIconButton={false}
-          iconElementRight={<FlatButton
-            label="Log out"
-            onClick={() => this.logOut()}
-          />}
-        />
-        <div className="Dashboard-container">
-          <Card className="Dashboard-main" style={styles.DashboardMain}>
-            <div className="Dashboard-topRow" style={styles.DashboardTopRow}>
-              <CardText className="Dashboard-header" style={styles.DashboardHeader}>Social Score</CardText>
-              <CardText className="Dashboard-sc" style={styles.DashboardSC}>{this.state.user.socialScore}/1000</CardText>
-            </div>
-            <div className="Dashboard-secondRow" style={styles.DashboardSecondRow}>
-              <CardText className="Dashboard-maxAmount-header" style={styles.DashboardMaxAmountHeader}>Maximum eligible Amount</CardText>
-              <CardText className="Dashboard-maxAmount" style={styles.DashboardMaxAmount}>{`\u20B9 ${this.state.user.maxAmount}`}</CardText>
-            </div>
-            <LoanHistory
-              loans={this.state.loans}
-              user={this.state.user}
-              addLoan={(newLoan) => {
-                this.setState(prevState => ({
-                  ...prevState,
-                  loans: [...prevState.loans, newLoan],
-                }));
-              }}
-              payEmi={loan => this.payEmi(loan)}
-            />
-            {/* <div>{JSON.stringify(this.state.loans)}</div> */}
-          </Card>
-          <Card className="Dashboard-profile">
-            <img
-              src={this.state.profilePicture}
-              className="Dashboard-profile-pic"
-              alt="User profile"
-            />
-            <div className="Dashboard-greeting">
-              {`Hello, ${this.state.user.firstName}`}
-            </div>
-            {(this.state.user.breakDown.twitter.followersCount === 0) ?
-              <a
-                href={`http://localhost:8080/api/auth/twitter?accessToken=${localStorage.getItem('accessToken')}`}
-                style={styles.twitterConnect}
-              >
-                <div style={{
-                  display: 'flex',
-                }}
+        {this.state.isBusy ?
+          <Modal.Dialog>
+            <Modal.Header>
+              <Modal.Title>Hold on</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>{this.state.message}</Modal.Body>
+          </Modal.Dialog>
+          :
+          <div>
+            <Navbar
+              fluid
+              className="bg-primary navbar-dark"
+            >
+              <Navbar.Header>
+                <Navbar.Brand>
+                  <Link to="/" href="/">Social Credit</Link>
+                </Navbar.Brand>
+              </Navbar.Header>
+              <Nav pullRight>
+                <Navbar.Link
+                  bsStyle="primary"
+                  className="btn-margin"
+                  onClick={() => this.props.auth.logout(this.props.history)}
                 >
-                  <img
-                    src="https://upload.wikimedia.org/wikipedia/fr/c/c8/Twitter_Bird.svg"
-                    style={{
-                      height: '24px',
-                      width: '24px',
-                    }}
-                    alt="twitter logo"
-                  />
-                  <span style={{
-                    alignSelf: 'center',
-                    fontWeight: '100',
-                    paddingLeft: '8px',
-                    textTransform: 'uppercase',
-                  }}
-                  >Connect Twitter
-                  </span>
-                </div>
-              </a> : undefined}
-            <div className="Dashboard-breakdown">
-              <ScoreBreakdown breakDown={this.state.user.breakDown} />
-            </div>
-          </Card>
-        </div>
+                  Log Out
+                </Navbar.Link>
+              </Nav>
+            </Navbar>
+
+            <Grid>
+              <Row>
+                <Col md={12} lg={8} >
+                  {/* // Social graph
+                //Social score
+                //max loan */}
+                  <Row>
+                    <Col>Your social score</Col>
+                    <Col>{this.state.user.socialScore}</Col>
+                  </Row>
+                  <Row>
+                    <Col>Maximum loan amount</Col>
+                    <Col>{this.state.user.maxAmount}</Col>
+                  </Row>
+                </Col>
+                <Col md={12} lg={4} >
+                  {/* // profile pic
+                // link accounts */}
+                  <Image src={this.state.userProfile.picture} responsive />
+                  {/* //<pre>{JSON.stringify(this.state, null, 4)}</pre> */}
+                </Col>
+              </Row>
+            </Grid>
+          </div>
+        }
       </div>
-  );
+    );
+  };
 }
 
 Dashboard.propTypes = {
   changeLoginState: PropTypes.func.isRequired,
 };
 
-export default Dashboard;
+export default withRouter(Dashboard);

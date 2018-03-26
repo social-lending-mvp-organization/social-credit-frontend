@@ -48,7 +48,7 @@ class LoanHistory extends React.Component {
         primary
         onClick={async () => {
           const headers = new Headers();
-          headers.append('accesstoken', localStorage.getItem('accessToken'));
+          headers.append('accesstoken', sessionStorage.getItem('accessToken'));
           headers.append('Content-Type', 'application/json');
 
           const loansResponse = await fetchHelper('/api/users/loans', {
