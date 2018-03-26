@@ -6,26 +6,26 @@ export const scSection = {
   fontSize: 'inherit',
 };
 
-export const DashboardTopRow = {
+export const ContainerTopRow = {
   fontSize: '2em',
   padding: '24px',
 };
 
-export const DashboardHeader = {
+export const ContainerHeader = {
   fontSize: 'inherit',
   padding: 0,
 };
 
-export const DashboardSC = {
+export const ContainerSC = {
   fontSize: 'inherit',
   padding: 0,
 };
 
-export const DashboardMain = {
+export const ContainerMain = {
   width: '100%',
 };
 
-export const DashboardSecondRow = {
+export const ContainerSecondRow = {
   display: 'flex',
   justifyContent: 'space-between',
   flexFlow: 'row',
@@ -33,13 +33,13 @@ export const DashboardSecondRow = {
   padding: '24px',
 };
 
-export const DashboardMaxAmountHeader = {
+export const ContainerMaxAmountHeader = {
   fontSize: 'inherit',
   flex: 1,
   padding: 0,
 };
 
-export const DashboardMaxAmount = {
+export const ContainerMaxAmount = {
   fontSize: 'inherit',
   textAlign: 'end',
   flex: 1,

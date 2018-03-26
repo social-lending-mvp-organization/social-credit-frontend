@@ -7,14 +7,14 @@ import { Link } from 'react-router-dom';
 import fetchHelper from '../../lib/fetch-helper';
 import { app } from '../../lib/constants';
 
-import './Dashboard.css';
-import * as styles from './Dashboard.style';
+import './Container.css';
+import * as styles from './Container.style';
 
 import ScoreBreakdown from '../ScoreBreakdown';
 import LoanHistory from '../LoanHistory';
 
 
-class Dashboard extends React.Component {
+class Container extends React.Component {
   constructor(props) {
     super(props);
 
@@ -103,7 +103,7 @@ class Dashboard extends React.Component {
 
     if (!isAuthenticated) this.props.history.replace('/login');
     return (
-      <div className="Dashboard">
+      <div className="Container">
         {this.state.isBusy ?
           <Modal.Dialog>
             <Modal.Header>
@@ -164,8 +164,8 @@ class Dashboard extends React.Component {
   };
 }
 
-Dashboard.propTypes = {
+Container.propTypes = {
   changeLoginState: PropTypes.func.isRequired,
 };
 
-export default withRouter(Dashboard);
+export default withRouter(Container);

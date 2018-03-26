@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route, withRouter } from 'react-router';
 
 import './App.css';
-import Dashboard from '../Dashboard';
+import Container from '../Container';
 import Login from '../Login';
 import Loading from '../Loading';
 import Auth from '../../Auth';
@@ -30,7 +30,7 @@ class App extends React.Component {
     // First banner page
     <Switch>
       {/* <Route path="/" exact render={props => <App auth={auth} {...props} />} /> */}
-      <Route path="/" exact render={props => <Dashboard auth={auth} {...props} />} />
+      <Route path="/" exact render={props => <Container auth={auth} {...props} />} />
       <Route path="/login" render={props => <Login auth={auth} {...props} />} />
       <Route
         path="/callback"
