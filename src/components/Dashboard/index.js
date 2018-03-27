@@ -22,9 +22,19 @@ class Dashboard extends React.Component {
   constructor(props) {
     super(props);
 
+    const cachedUser = 'Dashboard_user' in localStorage ?
+      JSON.parse(localStorage.Dashboard_user) : undefined;
+
+    const cachedProfilePicture = 'Dashboard_profilePicture' in localStorage ?
+      localStorage.Dashboard_profilePicture : undefined;
+
+    const cachedLoans = 'Dashboard_loans' in localStorage ?
+      JSON.parse(localStorage.Dashboard_loans) : [];
+
     this.state = {
-      user: undefined,
-      loans: [],
+      user: cachedUser,
+      profilePicture: cachedProfilePicture,
+      loans: cachedLoans,
     };
   }
   componentDidMount = async () => {
@@ -35,9 +45,17 @@ class Dashboard extends React.Component {
     const loginStatus = await fetchHelper('/api/users/login', { headers, method: 'POST' });
     if (loginStatus.statusCode === 200) {
       const userDetailsResponse = await fetchHelper('/api/users/info', { method: 'GET', headers });
+      localStorage.Dashboard_user = JSON.stringify(userDetailsResponse.data);
+
       const fetchProfilePictureUrl = `${facebook.profilePicture}&height=240&width=240&access_token=${accessToken}`;
       const profilePictureResponse = await fetchHelper(fetchProfilePictureUrl);
+      localStorage.Dashboard_profilePicture = profilePictureResponse.data.url;
+
       const loansData = await fetchHelper('/api/users/loans', { headers });
+      localStorage.Dashboard_loans = JSON.stringify(loansData.data);
+
+      console.log('Fresh data fetched');
+
       this.setState(prevState => ({
         ...prevState,
         loans: loansData.data,
@@ -49,8 +67,9 @@ class Dashboard extends React.Component {
 
   logOut = () => {
     window.FB.logout();
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('accessTokenExpiry');
+    // localStorage.removeItem('accessToken');
+    // localStorage.removeItem('accessTokenExpiry');
+    localStorage.clear();
     this.props.changeLoginState(false);
   };
 
