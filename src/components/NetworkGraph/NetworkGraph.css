@@ -11,7 +11,3 @@ h1{
   margin:auto;
   background: linear-gradient(to right, violet 6%,#9109eb 21% , #00aeff 39%, #2ce651 57%,yellow 70%,orange 89%, red 96%); /* Standard syntax (must be last) */
 }
-p{
-  font-family: 'Roboto', Helvetica, sans-serif;
-  margin-left:25%;
-}

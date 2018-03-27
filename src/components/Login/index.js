@@ -1,38 +1,75 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-
-import AppBar from 'material-ui/AppBar';
-import FlatButton from 'material-ui/FlatButton';
+import { withRouter } from 'react-router-dom';
+import { Navbar, Nav, NavItem, Button } from 'react-bootstrap';
 
 import './Login.css';
 
-class Login extends React.Component {
-  componentDidMount() {
 
+class Login extends React.Component {
+  login = () => {
+    this.props.auth.login();
+    this.props.history.replace('/');
   }
 
-  render = () => (
-    <div className="Login" >
-      <AppBar
-        title="Social-Credit"
-        showMenuIconButton={false}
-        iconElementRight={<FlatButton label="Login" onClick={() => this.props.fbLoginClick()} />}
-      />
-      <div
-        className="Login-jumbotron"
-      >
+  logout = () => {
+    this.props.auth.logout(this.props.history);
+  }
 
-        <h1 className="Login-header">
-          {'A new way to apply for loans.'}
-        </h1>
+  render = () => {
+    const isAuthenticated = this.props.auth.isAuthenticate();
+
+    if (isAuthenticated) this.props.history.replace('/');
+    return (
+      <div className="Login">
+        <Navbar
+          fluid
+          className="bg-primary navbar-dark"
+        >
+          <Navbar.Header>
+            <Navbar.Brand>
+              <a href="/">Social Credit</a>
+            </Navbar.Brand>
+          </Navbar.Header>
+          <Nav pullRight>
+            <Navbar.Link
+              bsStyle="primary"
+              className="btn-margin"
+              onClick={() => this.login()}
+              style={{ cursor: 'pointer' }}
+            >
+                  Log In
+            </Navbar.Link>
+          </Nav>
+        </Navbar>
+
+        <div className="Login-modal">
+          <p className="Login-modal-title">A new way to apply for loans</p>
+          <div className="Login-modal-container">
+            <div className="walkthrough-steps-image" />
+            <div className="Login-steps">
+              <p>
+                Connect your social media accounts.
+              </p>
+              <p>
+                Get your scoial score.
+              </p>
+              <p>
+                Apply for loan.
+              </p>
+            </div>
+          </div>
+          <div className="Login-secured-conditions">
+            <ul>
+              <li> We never repackage personal data for sale.</li>
+              <li> We never store your logins.</li>
+              <li> We never sell or share the content of your connections.</li>
+            </ul>
+          </div>
+        </div>
       </div>
-
-    </div>
-  );
+    );
+  }
 }
 
-Login.propTypes = {
-  fbLoginClick: PropTypes.func.isRequired,
-};
-
-export default Login;
+export default withRouter(Login);
