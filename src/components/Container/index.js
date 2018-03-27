@@ -1,13 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Col, Grid, Image, Modal, Navbar, Nav, Row } from 'react-bootstrap';
-import { withRouter } from 'react-router';
-import { Link } from 'react-router-dom';
+import { Modal, Navbar, Nav } from 'react-bootstrap';
+import { Route, Switch, withRouter } from 'react-router';
+import { NavLink } from 'react-router-dom';
 
-import fetchHelper from '../../lib/fetch-helper';
+import { fetchHelper } from '../../lib/fetch-helper';
 import { app } from '../../lib/constants';
 
-import './Container.css';
+import Dashboard from '../Dashboard';
+
+import * as styles from './Container.style';
 
 class Container extends React.Component {
   constructor(props) {
@@ -18,8 +20,10 @@ class Container extends React.Component {
       message: '',
       user: undefined,
       loans: [],
+      connections: [],
     };
   }
+
   componentDidMount = async () => {
     this.setState(prevState => ({
       ...prevState,
@@ -60,7 +64,6 @@ class Container extends React.Component {
           isBusy: true,
           message: 'Retrieving loan details...',
         }), async () => {
-          const p = 3;
           const userProfile = await this.props.auth.userInfo();
 
           const loanHeaders = new Headers();
@@ -71,7 +74,7 @@ class Container extends React.Component {
             isBusy: false,
             loans: loansData.data,
             user: userDetailsResponse.data,
-            userProfile,
+            connections: [userProfile],
           }));
         });
       });
@@ -98,65 +101,82 @@ class Container extends React.Component {
 
     if (!isAuthenticated) this.props.history.replace('/login');
     return (
-      <div className="Container">
-        {this.state.isBusy ?
+      this.state.isBusy ?
+        <div style={styles.container}>
           <Modal.Dialog>
             <Modal.Header>
               <Modal.Title>Hold on</Modal.Title>
             </Modal.Header>
-
             <Modal.Body>{this.state.message}</Modal.Body>
           </Modal.Dialog>
-          :
-          <div>
-            <Navbar
-              fluid
-              className="bg-primary navbar-dark"
-            >
-              <Navbar.Header>
-                <Navbar.Brand>
-                  <Link to="/" href="/">Social Credit</Link>
-                </Navbar.Brand>
-              </Navbar.Header>
-              <Nav pullRight>
-                <Navbar.Link
-                  bsStyle="primary"
-                  className="btn-margin"
-                  onClick={() => this.props.auth.logout(this.props.history)}
-                >
-                  Log Out
-                </Navbar.Link>
-              </Nav>
-            </Navbar>
+        </div>
+        :
+        <div style={styles.container}>
+          <Navbar
+            fluid
+            className="bg-primary navbar-dark"
+          >
+            <Navbar.Header>
+              <Navbar.Brand>
+                <NavLink
+                  to="/"
+                  style={{
+                    padding: '16px auto',
+                  }}
+                >Social Credit
+                </NavLink>
+              </Navbar.Brand>
+            </Navbar.Header>
+            <Nav style={styles.navPrimaryItems}>
+              <Navbar.Link
+                bsStyle="primary"
+                style={styles.navPrimaryItem}
+              >
+                Connections
+              </Navbar.Link>
+              <Navbar.Link
+                bsStyle="primary"
+                style={styles.navPrimaryItem}
+              >
+                Loans
+              </Navbar.Link>
+              <Navbar.Link
+                bsStyle="primary"
+                style={styles.navPrimaryItem}
+              >
+                About
+              </Navbar.Link>
+            </Nav>
+            <Nav style={styles.navSecondaryItems}>
+              <Navbar.Link
+                bsStyle="primary"
+                className="btn-margin"
+                onClick={() => this.props.auth.logout(this.props.history)}
+              >
+                Log Out
+              </Navbar.Link>
+            </Nav>
 
-            <Grid>
-              <Row>
-                <Col md={12} lg={8} >
-                  {/* // Social graph
-                //Social score
-                //max loan */}
-                  <Row>
-                    <Col>Your social score</Col>
-                    <Col>{this.state.user.socialScore}</Col>
-                  </Row>
-                  <Row>
-                    <Col>Maximum loan amount</Col>
-                    <Col>{this.state.user.maxAmount}</Col>
-                  </Row>
-                </Col>
-                <Col md={12} lg={4} >
-                  {/* // profile pic
-                // link accounts */}
-                  <Image src={this.state.userProfile.picture} responsive />
-                  {/* //<pre>{JSON.stringify(this.state, null, 4)}</pre> */}
-                </Col>
-              </Row>
-            </Grid>
-          </div>
-        }
-      </div>
+          </Navbar>
+
+
+          <Switch >
+            <Route
+              path="/"
+              exact
+              render={props => (
+                <Dashboard
+                  user={this.state.user}
+                  connections={this.state.connections}
+                  style={styles.main}
+                  {...props}
+                />
+              )}
+            />
+          </Switch>
+        </div >
     );
-  };
+  }
 }
 
 Container.propTypes = {

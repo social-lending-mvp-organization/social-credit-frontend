@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
 
 import './Login.css';
+import * as styles from './Login.style';
 
 class Login extends React.Component {
   login = () => {
@@ -36,23 +37,27 @@ class Login extends React.Component {
               onClick={() => this.login()}
               style={{ cursor: 'pointer' }}
             >
-                  Log In
+              Log In
             </Navbar.Link>
           </Nav>
         </Navbar>
 
         <div className="Login-modal">
-          <p className="Login-modal-title">A new way to apply for loans.</p>
+          <p
+            className="Login-modal-title"
+            style={styles.modalTitle}
+          >A new way to apply for loans.
+          </p>
           <div className="Login-modal-container">
             <div className="walkthrough-steps-image" />
-            <div className="Login-steps">
-              <p>
+            <div className="Login-steps" >
+              <p style={styles.step}>
                 Connect your social media accounts.
               </p>
-              <p>
+              <p style={styles.step}>
                 Get your social score.
-              </p>
-              <p>
+              </p >
+              <p style={styles.step}>
                 Apply for your loan.
               </p>
             </div>

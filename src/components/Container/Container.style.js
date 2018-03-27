@@ -1,57 +1,24 @@
-export const scSection = {
+export const container = {
   display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'start',
-  width: '70%',
-  fontSize: 'inherit',
+  flexDirection: 'column',
+  height: '100%',
 };
 
-export const ContainerTopRow = {
-  fontSize: '2em',
-  padding: '24px',
+export const main = {
+  flexGrow: '1',
 };
 
-export const ContainerHeader = {
-  fontSize: 'inherit',
-  padding: 0,
+export const navPrimaryItem = {
+  marginRight: '32px',
 };
 
-export const ContainerSC = {
-  fontSize: 'inherit',
-  padding: 0,
+export const navPrimaryItems = {
+  flexDirection: 'row',
+  flexGrow: 1,
+  cursor: 'pointer',
 };
 
-export const ContainerMain = {
-  width: '100%',
-};
-
-export const ContainerSecondRow = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  flexFlow: 'row',
-  fontSize: '2em',
-  padding: '24px',
-};
-
-export const ContainerMaxAmountHeader = {
-  fontSize: 'inherit',
-  flex: 1,
-  padding: 0,
-};
-
-export const ContainerMaxAmount = {
-  fontSize: 'inherit',
-  textAlign: 'end',
-  flex: 1,
-  padding: 0,
-};
-
-export const twitterConnect = {
-  textDecoration: 'none',
-  display: 'inline-block',
-  padding: '8px',
-  backgroundColor: '#c8cbd1',
-  borderRadius: '2px',
-  marginTop: '16px',
-  color: '#000',
+export const navSecondaryItems = {
+  flexGrow: 0,
+  cursor: 'pointer',
 };

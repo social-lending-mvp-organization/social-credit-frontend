@@ -14,7 +14,7 @@ import Dialog from 'material-ui/Dialog';
 import Slider from 'material-ui/Slider';
 import { CardText } from 'material-ui/Card';
 
-import fetchHelper from '../../lib/fetch-helper';
+import { fetchHelper } from '../../lib/fetch-helper';
 import * as styles from './styles';
 
 import Emi from '../Emi';

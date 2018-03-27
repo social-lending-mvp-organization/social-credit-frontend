@@ -1,10 +1,14 @@
 import React from 'react';
-// import loading from './loading.svg';
+import { Modal } from 'react-bootstrap';
 
 const Callback = () => (
   <div>
-    {/* <img src={loading} alt="loading" /> */}
-    loading...
+    <Modal.Dialog>
+      <Modal.Header>
+        <Modal.Title>Hold on</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>loading...</Modal.Body>
+    </Modal.Dialog>
   </div>
 );
 
