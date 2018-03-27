@@ -14,22 +14,49 @@ import * as styles from './NetworkGraph.style';
 class NetworkGraph extends React.Component {
   constructor(props) {
     super(props);
+    const cachedData = 'NetworkGraph_data' in localStorage ?
+      JSON.parse(localStorage.NetworkGraph_data) : [];
     this.state = {
-      data: [],
+      data: cachedData,
     };
   }
 
   componentDidMount = async () => {
+    this.renderNetworkGraph(this.state.data);
+    const newJson = await fetchHelper(`${twitter.twitterGraph}${this.props.screenName}`);
+    localStorage.NetworkGraph_data = JSON.stringify(newJson);
+    console.log('Fresh graph fetched');
+    this.renderNetworkGraph(newJson);
+    this.setState({
+      data: newJson,
+    });
+  }
+
+  getAllPatterns = () => (this.state.data.nodes ?
+    this.state.data.nodes.map(node =>
+      this.patternDefinitionTemplate(node.group, node.photo))
+    :
+    null);
+
+  patternDefinitionTemplate = (id, uri) => (
+    <defs key={id}>
+      <pattern x="25" y="25" id={`node${id}`} patternUnits="userSpaceOnUse" height="50" width="50">
+        <image object-fit="cover" height="50" width="50" href={uri} />
+      </pattern>
+    </defs >
+  )
+
+  renderNetworkGraph = (json) => {
     const width = 500;
     const height = 750;
     const svg = d3.select('svg')// .append("svg")
       .attr('width', width)
       .attr('height', height);
-    const json = await fetchHelper(`${twitter.twitterGraph}${this.props.screenName}`);
-    console.log(json);
-    const images = json.nodes.map(eachNode => eachNode.photo);
 
-    console.log(images);
+    // const images = json.nodes.map(eachNode => eachNode.photo);
+    // const json = this.state.data;
+
+    if (json.length === 0) { return; }
 
     const force = d3.layout.force()
       .gravity(0.0025)// .05)
@@ -86,34 +113,17 @@ class NetworkGraph extends React.Component {
     force.on('tick', () => {
       node.attr('transform', d => `translate(${d.x},${d.y})`);
     });
-    this.setState({
-      data: json,
-    });
   }
 
-  getAllPatterns = () => (this.state.data.nodes ?
-    this.state.data.nodes.map(node =>
-      this.patternDefinitionTemplate(node.group, node.photo))
-    :
-    null);
-
-  patternDefinitionTemplate = (id, uri) => (
-    <defs key={id}>
-      <pattern x="25" y="25" id={`node${id}`} patternUnits="userSpaceOnUse" height="50" width="50">
-        <image object-fit="cover" height="50" width="50" href={uri} />
-      </pattern>
-    </defs >
-  )
-
-  render = () => (<div style={styles.NetworkGraph} >
-    <h1>YOUR FOLLOWERS!</h1>
-    <svg id="canvas" width="1024" height="1024">
-      {this.getAllPatterns()}
-    </svg>
-    <div className="color-bar" />
-    <p> Number of followers -------------&gt; </p>
-                  </div>
-
+  render = () => (
+    <div style={styles.NetworkGraph} >
+      <h1>YOUR FOLLOWERS!</h1>
+      <svg id="canvas" width="1024" height="1024">
+        {this.getAllPatterns()}
+      </svg>
+      <div className="color-bar" />
+      <p> Number of followers -------------&gt; </p>
+    </div>
   )
 }
 
