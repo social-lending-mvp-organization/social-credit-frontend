@@ -1,6 +1,8 @@
-export const facebook = {
-  profilePicture: 'https://graph.facebook.com/me/picture?redirect=false',
+
+export const twitter = {
+  twitterGraph: '/api/users/twitterGraph?screenName=',
 };
+
 
 export const app = {
   apiToken: 'api_token',
@@ -9,4 +11,3 @@ export const app = {
   expiresAt: 'expires_at',
 };
 
-export default facebook;

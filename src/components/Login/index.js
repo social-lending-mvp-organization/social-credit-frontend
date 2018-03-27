@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { Navbar, Nav, NavItem, Button } from 'react-bootstrap';
 
 import './Login.css';
-import * as styles from './Login.style';
+
 
 class Login extends React.Component {
   login = () => {
@@ -24,7 +24,6 @@ class Login extends React.Component {
       <div className="Login">
         <Navbar
           fluid
-          style={styles.navBar}
           className="bg-primary navbar-dark"
         >
           <Navbar.Header>
@@ -37,6 +36,7 @@ class Login extends React.Component {
               bsStyle="primary"
               className="btn-margin"
               onClick={() => this.login()}
+              style={{ cursor: 'pointer' }}
             >
                   Log In
             </Navbar.Link>

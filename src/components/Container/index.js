@@ -144,6 +144,9 @@ class Container extends React.Component {
                   <Row>
                     <Col>Your social score</Col>
                     <Col>{this.state.user.socialScore}</Col>
+
+                    <NetworkGraph screenName={this.state.user.breakDown.twitter.screenName} />
+
                   </Row>
                   <Row>
                     <Col>Maximum loan amount</Col>
