@@ -46,38 +46,7 @@ class Container extends React.Component {
       const { apiToken } = loginStatus;
       sessionStorage.setItem(app.apiToken, apiToken);
 
-      this.setState(prevState => ({
-        ...prevState,
-        isBusy: true,
-        message: 'Calculating your social score...',
-      }), async () => {
-        const infoHeaders = new Headers();
-        infoHeaders.append(app.accessToken, sessionStorage.getItem(app.apiToken));
-
-        const userDetailsResponse = await fetchHelper('/api/users/info', {
-          method: 'GET',
-          headers: infoHeaders,
-        });
-
-        this.setState(prevState => ({
-          ...prevState,
-          isBusy: true,
-          message: 'Retrieving loan details...',
-        }), async () => {
-          const userProfile = await this.props.auth.userInfo();
-
-          const loanHeaders = new Headers();
-          loanHeaders.append(app.accessToken, sessionStorage.getItem(app.apiToken));
-          const loansData = await fetchHelper('/api/users/loans', { headers: loanHeaders });
-          this.setState(prevState => ({
-            ...prevState,
-            isBusy: false,
-            loans: loansData.data,
-            user: userDetailsResponse.data,
-            connections: [userProfile],
-          }));
-        });
-      });
+      await this.retrieveProfile();
     });
   }
 
@@ -95,6 +64,41 @@ class Container extends React.Component {
       }),
     }));
   };
+
+  retrieveProfile = async () => {
+    this.setState(prevState => ({
+      ...prevState,
+      isBusy: true,
+      message: 'Calculating your social score...',
+    }), async () => {
+      const infoHeaders = new Headers();
+      infoHeaders.append(app.accessToken, sessionStorage.getItem(app.apiToken));
+
+      const userDetailsResponse = await fetchHelper('/api/users/info', {
+        method: 'GET',
+        headers: infoHeaders,
+      });
+
+      this.setState(prevState => ({
+        ...prevState,
+        isBusy: true,
+        message: 'Retrieving loan details...',
+      }), async () => {
+        const userProfile = await this.props.auth.userInfo();
+
+        const loanHeaders = new Headers();
+        loanHeaders.append(app.accessToken, sessionStorage.getItem(app.apiToken));
+        const loansData = await fetchHelper('/api/users/loans', { headers: loanHeaders });
+        this.setState(prevState => ({
+          ...prevState,
+          isBusy: false,
+          loans: loansData.data,
+          user: userDetailsResponse.data,
+          connections: [userProfile],
+        }));
+      });
+    });
+  }
 
   render = () => {
     const isAuthenticated = this.props.auth.isAuthenticate();
@@ -169,6 +173,7 @@ class Container extends React.Component {
                   user={this.state.user}
                   connections={this.state.connections}
                   style={styles.main}
+                  retrieveProfile={async () => { await this.retrieveProfile(); }}
                   {...props}
                 />
               )}

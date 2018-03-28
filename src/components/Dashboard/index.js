@@ -1,7 +1,7 @@
 import currencyFormatter from 'currency-formatter';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { Grid, Row, Col, Image, Panel } from 'react-bootstrap';
+import { Badge, Grid, Row, Col, Image, Panel } from 'react-bootstrap';
 import CircularProgressbar from 'react-circular-progressbar';
 import { Motion, spring } from 'react-motion';
 
@@ -27,9 +27,9 @@ const Dashboard = props => (
         md={12}
         lg={6}
         style={{
-        ...styles.userGreet,
-        ...styles.heading,
-      }}
+          ...styles.userGreet,
+          ...styles.heading,
+        }}
       > <span style={styles.userName}>{`${props.user.firstName} ${props.user.lastName}`}</span>
       </Col>
       <Col md={12} lg={6} style={styles.holder}>
@@ -61,7 +61,7 @@ const Dashboard = props => (
           <Panel.Heading style={{
             ...styles.subHeading,
           }}
-          > Social score
+          > Social score <Badge onClick={async () => { await props.retrieveProfile(); }}><i className="fas fa-sync" /></Badge>
           </Panel.Heading>
           <Panel.Body>
             <Motion
