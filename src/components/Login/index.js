@@ -2,21 +2,24 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
 
+import { signUpAuth } from '../../Auth';
+
 import './Login.css';
 import * as styles from './Login.style';
 
+
 class Login extends React.Component {
   login = () => {
-    this.props.auth.login();
+    signUpAuth.login();
     this.props.history.replace('/');
   }
 
   logout = () => {
-    this.props.auth.logout(this.props.history);
+    signUpAuth.logout(this.props.history);
   }
 
   render = () => {
-    const isAuthenticated = this.props.auth.isAuthenticate();
+    const isAuthenticated = signUpAuth.isAuthenticate();
 
     if (isAuthenticated) this.props.history.replace('/');
     return (

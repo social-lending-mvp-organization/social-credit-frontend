@@ -2,14 +2,16 @@ import auth0 from 'auth0-js';
 import { app } from '../lib/constants';
 
 export default class Auth {
-  auth0 = new auth0.WebAuth({
-    domain: 'sauravsahu.auth0.com',
-    clientID: 'TF5Sv1SO5dFnKd7OMb7bTykdiWzovGeS',
-    redirectUri: 'http://localhost:3000/callback',
-    audience: 'https://sauravsahu.auth0.com/userinfo',
-    responseType: 'token id_token',
-    scope: 'openid profile email',
-  });
+  constructor(clientID) {
+    this.auth0 = new auth0.WebAuth({
+      domain: 'sauravsahu.auth0.com',
+      clientID,
+      redirectUri: 'http://localhost:3000/callback',
+      audience: 'https://sauravsahu.auth0.com/userinfo',
+      responseType: 'token id_token',
+      scope: 'openid profile email',
+    });
+  }
 
   login = () => {
     this.auth0.authorize();
@@ -60,4 +62,15 @@ export default class Auth {
       resolve(data);
     });
   });
+
+  getAccessToken = async () => new Promise((resolve) => {
+    this.auth0.parseHash((err, authResult) => {
+      if (authResult && authResult.accessToken && authResult.idToken) {
+        resolve(authResult.accessToken);
+      }
+    });
+  });
 }
+
+export const signUpAuth = new Auth('TF5Sv1SO5dFnKd7OMb7bTykdiWzovGeS');
+export const connectionsAuth = new Auth('sMGW4SDi5S520Wla8q57F5Xhi63d6SfE');

@@ -1,13 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Navbar, Nav } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import { Route, Switch, withRouter } from 'react-router';
-import { NavLink } from 'react-router-dom';
 
 import { fetchHelper } from '../../lib/fetch-helper';
 import { app } from '../../lib/constants';
 
 import Dashboard from '../Dashboard';
+import Connections from '../Connections';
+import Navigation from '../Navigation';
+
+import { signUpAuth } from '../../Auth';
 
 import * as styles from './Container.style';
 
@@ -16,18 +19,20 @@ class Container extends React.Component {
     super(props);
 
     this.state = {
-      isBusy: true,
+      isBusy: false,
       message: '',
       user: undefined,
       loans: [],
       connections: [],
+      loaded: false,
     };
   }
 
-  componentDidMount = async () => {
+  login = async () => {
     this.setState(prevState => ({
       ...prevState,
       isBusy: true,
+      loaded: false,
       message: 'Logging you in...',
     }), async () => {
       const loginHeaders = new Headers();
@@ -40,7 +45,7 @@ class Container extends React.Component {
       });
 
       if (loginStatus.statusCode !== 200) {
-        this.props.auth.logout(this.props.history);
+        signUpAuth.logout(this.props.history);
       }
 
       const { apiToken } = loginStatus;
@@ -68,6 +73,7 @@ class Container extends React.Component {
   retrieveProfile = async () => {
     this.setState(prevState => ({
       ...prevState,
+      loaded: false,
       isBusy: true,
       message: 'Calculating your social score...',
     }), async () => {
@@ -84,7 +90,7 @@ class Container extends React.Component {
         isBusy: true,
         message: 'Retrieving loan details...',
       }), async () => {
-        const userProfile = await this.props.auth.userInfo();
+        const userProfile = await signUpAuth.userInfo();
 
         const loanHeaders = new Headers();
         loanHeaders.append(app.accessToken, sessionStorage.getItem(app.apiToken));
@@ -95,93 +101,50 @@ class Container extends React.Component {
           loans: loansData.data,
           user: userDetailsResponse.data,
           connections: [userProfile],
+          loaded: true,
         }));
       });
     });
   }
 
-  render = () => {
-    const isAuthenticated = this.props.auth.isAuthenticate();
-
-    if (!isAuthenticated) this.props.history.replace('/login');
-    return (
-      this.state.isBusy ?
-        <div style={styles.container}>
-          <Modal.Dialog>
-            <Modal.Header>
-              <Modal.Title>Hold on</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>{this.state.message}</Modal.Body>
-          </Modal.Dialog>
-        </div>
-        :
-        <div style={styles.container}>
-          <Navbar
-            fluid
-            className="bg-primary navbar-dark"
-          >
-            <Navbar.Header>
-              <Navbar.Brand>
-                <NavLink
-                  to="/"
-                  style={{
-                    padding: '16px auto',
-                  }}
-                >Social Credit
-                </NavLink>
-              </Navbar.Brand>
-            </Navbar.Header>
-            <Nav style={styles.navPrimaryItems}>
-              <Navbar.Link
-                bsStyle="primary"
-                style={styles.navPrimaryItem}
-              >
-                Connections
-              </Navbar.Link>
-              <Navbar.Link
-                bsStyle="primary"
-                style={styles.navPrimaryItem}
-              >
-                Loans
-              </Navbar.Link>
-              <Navbar.Link
-                bsStyle="primary"
-                style={styles.navPrimaryItem}
-              >
-                About
-              </Navbar.Link>
-            </Nav>
-            <Nav style={styles.navSecondaryItems}>
-              <Navbar.Link
-                bsStyle="primary"
-                className="btn-margin"
-                onClick={() => this.props.auth.logout(this.props.history)}
-              >
-                Log Out
-              </Navbar.Link>
-            </Nav>
-
-          </Navbar>
-
-
-          <Switch >
-            <Route
-              path="/"
-              exact
-              render={props => (
-                <Dashboard
-                  user={this.state.user}
-                  connections={this.state.connections}
-                  style={styles.main}
-                  retrieveProfile={async () => { await this.retrieveProfile(); }}
-                  {...props}
-                />
-              )}
+  render = () => (
+    <div className="Container">
+      {this.state.isBusy ? null : <Navigation />}
+      <Switch>
+        <Route
+          path="/"
+          exact
+          render={props => (
+            <Dashboard
+              user={this.state.user}
+              connections={this.state.connections}
+              style={styles.main}
+              login={async () => { await this.login(); }}
+              retrieveProfile={async () => { await this.retrieveProfile(); }}
+              isBusy={{
+                value: this.state.isBusy,
+                message: this.state.message,
+                loaded: this.state.loaded,
+              }}
+              {...props}
             />
-          </Switch>
-        </div >
-    );
-  }
+          )}
+        />
+
+        <Route
+          path="/connections"
+          render={props => (
+            <Connections
+              user={this.state.user}
+              connections={this.state.connections}
+              retrieveProfile={async () => { await this.retrieveProfile(); }}
+              {...props}
+            />
+          )}
+        />
+      </Switch>
+    </div>
+  );
 }
 
 Container.propTypes = {

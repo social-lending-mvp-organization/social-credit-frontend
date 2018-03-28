@@ -1,42 +1,37 @@
 import React from 'react';
-import { Switch, Route, withRouter } from 'react-router';
+import { Route, Switch, withRouter } from 'react-router';
 
-import './App.css';
+import { signUpAuth } from '../../Auth';
+
 import Container from '../Container';
 import Login from '../Login';
 import Loading from '../Loading';
-import Auth from '../../Auth';
 
-const auth = new Auth();
-
-const handleAuthentication = (nextState) => {
-  if (/access_token|id_token|error/.test(nextState.location.hash)) {
-    auth.handleAuthentication(nextState.history);
-  }
-};
+import './App.css';
 
 class App extends React.Component {
-  getTitleBar = () => {
-    const secondaryText = this.state.isLoggedIn ? 'Welcome back' : '';
-    return (
-      <div>
-        <span>Social Credit</span>
-        {secondaryText}
-      </div>
-    );
-  }
+  handleAuthentication = () => {
+    if (/access_token|id_token|error/.test(this.props.location.hash)) {
+      signUpAuth.handleAuthentication(this.props.history);
+    }
+  };
 
   render = () => (
-    // First banner page
     <Switch>
-      <Route path="/" exact render={props => <Container auth={auth} {...props} />} />
-      <Route path="/login" render={props => <Login auth={auth} {...props} />} />
+      <Route
+        path="/login"
+        component={Login}
+      />
       <Route
         path="/callback"
-        render={(props) => {
-          handleAuthentication(props);
-          return <Loading {...props} />;
+        render={() => {
+          this.handleAuthentication();
+          return <Loading />;
         }}
+      />
+      <Route
+        path="*"
+        component={Container}
       />
     </Switch>
   );

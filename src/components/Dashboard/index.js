@@ -1,7 +1,7 @@
 import currencyFormatter from 'currency-formatter';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { Badge, Grid, Row, Col, Image, Panel } from 'react-bootstrap';
+import { Badge, Grid, Row, Col, Image, Panel, Modal } from 'react-bootstrap';
 import CircularProgressbar from 'react-circular-progressbar';
 import { Motion, spring } from 'react-motion';
 
@@ -9,88 +9,116 @@ import 'react-circular-progressbar/dist/styles.css';
 import * as styles from './Dashboard.style';
 import './Dashboard.css';
 
-const Dashboard = props => (
-  <Grid
-    style={{
-      ...props.style,
-      ...styles.dashboard,
-      backgroundColor: '#F3F3F3',
-    }}
-  >
+import { signUpAuth } from '../../Auth';
 
-    <Row style={{
-      ...styles.row,
-      ...styles.userCover,
-    }}
-    >
-      <Col
-        md={12}
-        lg={6}
-        style={{
-          ...styles.userGreet,
-          ...styles.heading,
-        }}
-      > <span style={styles.userName}>{`${props.user.firstName} ${props.user.lastName}`}</span>
-      </Col>
-      <Col md={12} lg={6} style={styles.holder}>
-        <Image
-          src={props.connections[0].picture}
-          responsive
-          style={styles.userPicture}
-        />
-      </Col>
-    </Row>
+class Dashboard extends React.Component {
+  componentDidMount = async () => {
+    const isAuthenticated = signUpAuth.isAuthenticate();
+    console.log('login', isAuthenticated);
+    if (isAuthenticated) {
+      await this.props.login();
+    }
+  }
 
-    <Row style={{
-      ...styles.row,
-      paddingTop: '16px',
-    }}
-    >
-      <Col md={12} lg={6} >
-        <Panel>
-          <Panel.Heading style={styles.subHeading}>
-            Social Graph
-          </Panel.Heading>
-          <Panel.Body>
-            Connect your Twitter account to view your social graph...
-          </Panel.Body>
-        </Panel>
-      </Col>
-      <Col md={12} lg={6}>
-        <Panel style={styles.row}>
-          <Panel.Heading style={{
-            ...styles.subHeading,
+  render = () => {
+    const isAuthenticated = signUpAuth.isAuthenticate();
+
+    if (!isAuthenticated) {
+      this.props.history.replace('/login');
+      return null;
+    }
+
+    return (
+      !this.props.isBusy.loaded ?
+        <Modal.Dialog>
+          <Modal.Header>
+            <Modal.Title>Hold on</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>{this.props.isBusy.message}</Modal.Body>
+        </Modal.Dialog>
+        :
+        <Grid
+          style={{
+            ...this.props.style,
+            ...styles.dashboard,
+            backgroundColor: '#F3F3F3',
           }}
-          > Social score <Badge onClick={async () => { await props.retrieveProfile(); }}><i className="fas fa-sync" /></Badge>
-          </Panel.Heading>
-          <Panel.Body>
-            <Motion
-              defaultStyle={{ percentage: 0 }}
+        >
+          <Row style={{
+            ...styles.row,
+            ...styles.userCover,
+          }}
+          >
+            <Col
+              md={12}
+              lg={6}
               style={{
-                percentage: spring(
-                  props.user.socialScore,
-                  { stiffness: 300, damping: 40 },
-                ),
+                ...styles.userGreet,
+                ...styles.heading,
               }}
-            >
-              {value => (
-                <CircularProgressbar
-                  textForPercentage={text => `${text * 10}/1000`}
-                  percentage={Math.floor(value.percentage) / 10}
-                />)
-              }
-            </Motion>
-          </Panel.Body>
-        </Panel>
-        <Panel>
-          <Panel.Heading style={styles.subHeading}>Maximum loan amount</Panel.Heading>
-          <Panel.Body>
-            {currencyFormatter.format(props.user.maxAmount, { code: 'INR' })}
-          </Panel.Body>
-        </Panel>
-      </Col>
-    </Row>
-  </Grid >
-);
+            > <span style={styles.userName}>{`${this.props.user.firstName} ${this.props.user.lastName}`}</span>
+            </Col>
+            <Col md={12} lg={6} style={styles.holder}>
+              <Image
+                src={this.props.connections[0].picture}
+                responsive
+                style={styles.userPicture}
+              />
+            </Col>
+          </Row>
+
+          <Row style={{
+            ...styles.row,
+            paddingTop: '16px',
+          }}
+          >
+            <Col md={12} lg={6} >
+              <Panel>
+                <Panel.Heading style={styles.subHeading}>
+                  Social Graph
+                </Panel.Heading>
+                <Panel.Body>
+                  Connect your Twitter account to view your social graph...
+                </Panel.Body>
+              </Panel>
+            </Col>
+            <Col md={12} lg={6}>
+              <Panel style={styles.row}>
+                <Panel.Heading style={{
+                  ...styles.subHeading,
+                }}
+                > Social score <Badge onClick={async () => { await this.props.retrieveProfile(); }}><i className="fas fa-sync" /></Badge>
+                </Panel.Heading>
+                <Panel.Body>
+                  <Motion
+                    defaultStyle={{ percentage: 0 }}
+                    style={{
+                      percentage: spring(
+                        this.props.user.socialScore,
+                        { stiffness: 300, damping: 40 },
+                      ),
+                    }}
+                  >
+                    {value => (
+                      <CircularProgressbar
+                        textForPercentage={text => `${text * 10}/1000`}
+                        percentage={Math.floor(value.percentage) / 10}
+                      />)
+                    }
+                  </Motion>
+                </Panel.Body>
+              </Panel>
+              <Panel>
+                <Panel.Heading style={styles.subHeading}>Maximum loan amount</Panel.Heading>
+                <Panel.Body>
+                  {currencyFormatter.format(this.props.user.maxAmount, { code: 'INR' })}
+                </Panel.Body>
+              </Panel>
+            </Col>
+          </Row>
+        </Grid >
+    );
+  }
+}
 
 export default withRouter(Dashboard);
