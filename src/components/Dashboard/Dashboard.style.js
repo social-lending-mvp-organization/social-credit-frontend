@@ -1,5 +1,5 @@
 export const dashboard = {
-  padding: '0 0 32px 0',
+
 };
 
 export const userPicture = {

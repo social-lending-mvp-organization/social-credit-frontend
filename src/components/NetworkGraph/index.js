@@ -20,10 +20,12 @@ class NetworkGraph extends React.Component {
   componentDidMount = async () => {
     const width = 500;
     const height = 750;
-    const svg = d3.select('svg')// .append("svg")
+
+    const json = this.props.socialGraph;
+
+    const svg = d3.select('svg')
       .attr('width', width)
       .attr('height', height);
-    const json = await fetchHelper(`${twitter.twitterGraph}${this.props.screenName}`);
 
     const force = d3.layout.force()
       .gravity(0.0025)// .05)
@@ -45,7 +47,6 @@ class NetworkGraph extends React.Component {
       .attr('r', '25')
       .attr('fill', d => `url(#node${d.group}) `)
       .style('stroke', (r) => {
-        // console.log(json.links[r.group].weight, r);
         if (json.links[r.group - 1] !== undefined) {
           if (r.group - 1 === 0) {
             return 'grey';
@@ -73,13 +74,10 @@ class NetworkGraph extends React.Component {
     force.on('tick', () => {
       node.attr('transform', d => `translate(${d.x},${d.y})`);
     });
-    this.setState({
-      data: json,
-    });
   }
 
-  getAllPatterns = () => (this.state.data.nodes ?
-    this.state.data.nodes.map(node =>
+  getAllPatterns = () => (this.props.socialGraph ?
+    this.props.socialGraph.nodes.map(node =>
       this.patternDefinitionTemplate(node.group, node.photo))
     :
     null);
@@ -89,12 +87,11 @@ class NetworkGraph extends React.Component {
       <pattern x="25" y="25" id={`node${id}`} patternUnits="userSpaceOnUse" height="50" width="50">
         <image object-fit="cover" height="50" width="50" href={uri} />
       </pattern>
-    </defs >
+    </defs>
   )
 
   render = () => (
     <div style={styles.NetworkGraph} >
-      <h1>YOUR FOLLOWERS!</h1>
       <svg id="canvas" width="1024" height="1024">
         {this.getAllPatterns()}
       </svg>

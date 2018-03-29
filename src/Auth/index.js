@@ -2,11 +2,11 @@ import auth0 from 'auth0-js';
 import { app } from '../lib/constants';
 
 export default class Auth {
-  constructor(clientID) {
+  constructor(clientID, redirectUri) {
     this.auth0 = new auth0.WebAuth({
       domain: 'sauravsahu.auth0.com',
       clientID,
-      redirectUri: 'http://localhost:3000/callback',
+      redirectUri,
       audience: 'https://sauravsahu.auth0.com/userinfo',
       responseType: 'token id_token',
       scope: 'openid profile email',
@@ -72,5 +72,5 @@ export default class Auth {
   });
 }
 
-export const signUpAuth = new Auth('TF5Sv1SO5dFnKd7OMb7bTykdiWzovGeS');
-export const connectionsAuth = new Auth('sMGW4SDi5S520Wla8q57F5Xhi63d6SfE');
+export const signUpAuth = new Auth('TF5Sv1SO5dFnKd7OMb7bTykdiWzovGeS', 'http://localhost:3000/new-user');
+export const connectionsAuth = new Auth('sMGW4SDi5S520Wla8q57F5Xhi63d6SfE', 'http://localhost:3000/new-provider');

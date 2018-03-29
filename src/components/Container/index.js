@@ -25,34 +25,37 @@ class Container extends React.Component {
       loans: [],
       connections: [],
       loaded: false,
+      socialGraph: undefined,
     };
   }
 
   login = async () => {
-    this.setState(prevState => ({
-      ...prevState,
-      isBusy: true,
-      loaded: false,
-      message: 'Logging you in...',
-    }), async () => {
-      const loginHeaders = new Headers();
-      const accessToken = sessionStorage.getItem(app.accessToken);
-      loginHeaders.append(app.accessToken, accessToken);
+    if (!this.state.loaded) {
+      this.setState(prevState => ({
+        ...prevState,
+        isBusy: true,
+        loaded: false,
+        message: 'Logging you in...',
+      }), async () => {
+        const loginHeaders = new Headers();
+        const accessToken = sessionStorage.getItem(app.accessToken);
+        loginHeaders.append(app.accessToken, accessToken);
 
-      const loginStatus = await fetchHelper('/api/users/login', {
-        headers: loginHeaders,
-        method: 'POST',
+        const loginStatus = await fetchHelper('/api/users/login', {
+          headers: loginHeaders,
+          method: 'POST',
+        });
+
+        if (loginStatus.statusCode !== 200) {
+          signUpAuth.logout(this.props.history);
+        }
+
+        const { apiToken } = loginStatus;
+        sessionStorage.setItem(app.apiToken, apiToken);
+
+        await this.retrieveProfile();
       });
-
-      if (loginStatus.statusCode !== 200) {
-        signUpAuth.logout(this.props.history);
-      }
-
-      const { apiToken } = loginStatus;
-      sessionStorage.setItem(app.apiToken, apiToken);
-
-      await this.retrieveProfile();
-    });
+    }
   }
 
   payEmi = (loan) => {
@@ -100,15 +103,21 @@ class Container extends React.Component {
           isBusy: false,
           loans: loansData.data,
           user: userDetailsResponse.data,
-          connections: [userProfile],
+          connections: { facebook: userProfile },
           loaded: true,
-        }));
+        }), async () => {
+          const twitterFollowers = await fetchHelper(`/api/users/twitterGraph?screenName=${this.state.user.breakDown.twitter.screenName}`);
+          this.setState(prevState => ({
+            ...prevState,
+            socialGraph: twitterFollowers,
+          }));
+        });
       });
     });
   }
 
   render = () => (
-    <div className="Container">
+    <div style={styles.container}>
       {this.state.isBusy ? null : <Navigation />}
       <Switch>
         <Route
@@ -121,6 +130,7 @@ class Container extends React.Component {
               style={styles.main}
               login={async () => { await this.login(); }}
               retrieveProfile={async () => { await this.retrieveProfile(); }}
+              socialGraph={this.state.socialGraph}
               isBusy={{
                 value: this.state.isBusy,
                 message: this.state.message,

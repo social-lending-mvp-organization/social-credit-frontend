@@ -1,9 +1,10 @@
 import React from 'react';
+import { withRouter } from 'react-router';
 import { Modal } from 'react-bootstrap';
 
 class Loading extends React.Component {
-  componentDidMount = () => {
-
+  componentDidMount = async () => {
+    await this.props.callback();
   }
 
   render = () => (
@@ -18,4 +19,4 @@ class Loading extends React.Component {
   );
 }
 
-export default Loading;
+export default withRouter(Loading);

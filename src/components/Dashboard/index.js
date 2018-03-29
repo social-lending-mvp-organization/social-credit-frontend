@@ -5,6 +5,8 @@ import { Badge, Grid, Row, Col, Image, Panel, Modal } from 'react-bootstrap';
 import CircularProgressbar from 'react-circular-progressbar';
 import { Motion, spring } from 'react-motion';
 
+import NetworkGraph from '../NetworkGraph';
+
 import 'react-circular-progressbar/dist/styles.css';
 import * as styles from './Dashboard.style';
 import './Dashboard.css';
@@ -56,11 +58,11 @@ class Dashboard extends React.Component {
                 ...styles.userGreet,
                 ...styles.heading,
               }}
-            > <span style={styles.userName}>{`${this.props.user.firstName} ${this.props.user.lastName}`}</span>
+            > <h1 >{`${this.props.user.firstName} ${this.props.user.lastName}`}</h1>
             </Col>
             <Col md={12} lg={6} style={styles.holder}>
               <Image
-                src={this.props.connections[0].picture}
+                src={this.props.connections.facebook.picture}
                 responsive
                 style={styles.userPicture}
               />
@@ -78,7 +80,14 @@ class Dashboard extends React.Component {
                   Social Graph
                 </Panel.Heading>
                 <Panel.Body>
-                  Connect your Twitter account to view your social graph...
+                  {this.props.user.breakDown.twitter.screenName === '' ?
+                    <div>Connect your Twitter account to view your social graph...</div>
+                    :
+                    <NetworkGraph
+                      screenName={this.props.user.breakDown.twitter.screenName}
+                      socialGraph={this.props.socialGraph}
+                    />
+                  }
                 </Panel.Body>
               </Panel>
             </Col>
