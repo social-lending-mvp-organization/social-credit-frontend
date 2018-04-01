@@ -118,7 +118,6 @@ class Container extends React.Component {
 
   render = () => (
     <div style={styles.container}>
-      {this.state.isBusy ? null : <Navigation />}
       <Switch>
         <Route
           path="/"
@@ -127,6 +126,7 @@ class Container extends React.Component {
             <Dashboard
               user={this.state.user}
               connections={this.state.connections}
+              loans={this.state.loans}
               style={styles.main}
               login={async () => { await this.login(); }}
               retrieveProfile={async () => { await this.retrieveProfile(); }}

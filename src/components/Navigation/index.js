@@ -15,7 +15,7 @@ const Navigation = props => (
       <Navbar.Header>
         <Navbar.Brand>
           <Navbar.Link
-            onClick={() => props.history.push('/')}
+            onClick={() => props.navigate(0)}
             style={{
               padding: '16px auto',
             }}
@@ -24,24 +24,18 @@ const Navigation = props => (
         </Navbar.Brand>
       </Navbar.Header>
       <Nav style={styles.navPrimaryItems}>
+
         <Navbar.Link
           bsStyle="primary"
           style={styles.navPrimaryItem}
-          onClick={() => props.history.push('/connections')}
-        >
-          Connections
-        </Navbar.Link>
-        <Navbar.Link
-          bsStyle="primary"
-          style={styles.navPrimaryItem}
-          to="/loans"
+          onClick={() => props.navigate(1)}
         >
           Loans
         </Navbar.Link>
         <Navbar.Link
           bsStyle="primary"
           style={styles.navPrimaryItem}
-          to="/score"
+          onClick={() => props.navigate(2)}
         >
           Score Calculation
         </Navbar.Link>

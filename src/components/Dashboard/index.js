@@ -1,15 +1,16 @@
-import currencyFormatter from 'currency-formatter';
 import React from 'react';
+import { Modal } from 'react-bootstrap';
 import { withRouter } from 'react-router';
-import { Badge, Grid, Row, Col, Image, Panel, Modal } from 'react-bootstrap';
-import CircularProgressbar from 'react-circular-progressbar';
-import { Motion, spring } from 'react-motion';
+import Parallax from 'react-springy-parallax';
 
-import NetworkGraph from '../NetworkGraph';
+import Navigation from '../Navigation';
+import ScoreCalc from '../ScoreCalc';
+import YourScore from '../YourScore';
+import Loans from '../Loans';
 
-import 'react-circular-progressbar/dist/styles.css';
-import * as styles from './Dashboard.style';
 import './Dashboard.css';
+
+import logo from '../../media/logo.svg';
 
 import { signUpAuth } from '../../Auth';
 
@@ -39,93 +40,52 @@ class Dashboard extends React.Component {
           <Modal.Body>{this.props.isBusy.message}</Modal.Body>
         </Modal.Dialog>
         :
-        <Grid
-          style={{
-            ...this.props.style,
-            ...styles.dashboard,
-            backgroundColor: '#F3F3F3',
-          }}
-        >
-          <Row style={{
-            ...styles.row,
-            ...styles.userCover,
-          }}
-          >
-            <Col
-              md={12}
-              lg={6}
-              style={{
-                ...styles.userGreet,
-                ...styles.heading,
-              }}
-            > <h1 >{`${this.props.user.firstName} ${this.props.user.lastName}`}</h1>
-            </Col>
-            <Col md={12} lg={6} style={styles.holder}>
-              <Image
-                src={this.props.connections.facebook.picture}
-                responsive
-                style={styles.userPicture}
-              />
-            </Col>
-          </Row>
-
-          <Row style={{
-            ...styles.row,
-            paddingTop: '16px',
-          }}
-          >
-            <Col md={12} lg={6} >
-              <Panel>
-                <Panel.Heading style={styles.subHeading}>
-                  Social Graph
-                </Panel.Heading>
-                <Panel.Body>
-                  {this.props.user.breakDown.twitter.screenName === '' ?
-                    <div>Connect your Twitter account to view your social graph...</div>
-                    :
-                    <NetworkGraph
-                      screenName={this.props.user.breakDown.twitter.screenName}
-                      socialGraph={this.props.socialGraph}
+        <div style={{ height: '100%' }}>
+          <div className="Navbar">
+            <Navigation navigate={layer => this.parallax.scrollTo(layer)} />
+          </div>
+          <div className="Layers">
+            <Parallax
+              ref={(ref) => { this.parallax = ref; }}
+              pages={3}
+              scrolling
+            >
+              <Parallax.Layer
+                offset={0}
+              >
+                <div className="Layer1">
+                  <div className="Layer1-container">
+                    <YourScore user={this.props.user} />
+                  </div>
+                </div>
+              </Parallax.Layer>
+              <Parallax.Layer
+                offset={1}
+              >
+                {/*
+            Request for a loan
+            Pay emi
+             */}
+                <div className="Layer2">
+                  <div className="Layer2-container">
+                    <Loans
+                      loans={this.props.loans}
                     />
-                  }
-                </Panel.Body>
-              </Panel>
-            </Col>
-            <Col md={12} lg={6}>
-              <Panel style={styles.row}>
-                <Panel.Heading style={{
-                  ...styles.subHeading,
-                }}
-                > Social score <Badge onClick={async () => { await this.props.retrieveProfile(); }}><i className="fas fa-sync" /></Badge>
-                </Panel.Heading>
-                <Panel.Body>
-                  <Motion
-                    defaultStyle={{ percentage: 0 }}
-                    style={{
-                      percentage: spring(
-                        this.props.user.socialScore,
-                        { stiffness: 300, damping: 40 },
-                      ),
-                    }}
-                  >
-                    {value => (
-                      <CircularProgressbar
-                        textForPercentage={text => `${text * 10}/1000`}
-                        percentage={Math.floor(value.percentage) / 10}
-                      />)
-                    }
-                  </Motion>
-                </Panel.Body>
-              </Panel>
-              <Panel>
-                <Panel.Heading style={styles.subHeading}>Maximum loan amount</Panel.Heading>
-                <Panel.Body>
-                  {currencyFormatter.format(this.props.user.maxAmount, { code: 'INR' })}
-                </Panel.Body>
-              </Panel>
-            </Col>
-          </Row>
-        </Grid >
+                  </div>
+                </div>
+              </Parallax.Layer>
+              <Parallax.Layer
+                offset={2}
+              >
+                <div className="Layer3">
+                  <div className="Layer3-container">
+                    <ScoreCalc />
+                  </div>
+                </div>
+              </Parallax.Layer>
+            </Parallax>
+          </div>
+        </div>
     );
   }
 }

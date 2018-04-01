@@ -1,79 +1,68 @@
 import React from 'react';
+import { Col, Grid, Row } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
-import {
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn,
-} from 'material-ui/Table';
-import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
-import Dialog from 'material-ui/Dialog';
-import Slider from 'material-ui/Slider';
-import { CardText } from 'material-ui/Card';
+import ReactTable from 'react-table';
 
-import { fetchHelper } from '../../lib/fetch-helper';
-import * as styles from './styles';
+import 'react-table/react-table.css';
 
+import Title from '../Title';
+import NewLoan from '../NewLoan';
 import Emi from '../Emi';
 
-class LoanHistory extends React.Component {
+class Loans extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       applyForLoanDialog: false,
       applyForLoanButtonEnabled: true,
-      amount: 25000,
+      amount: 10000,
       installments: 12,
     };
-    this.SPACE = ' ';
 
-    this.dialogActions = [
-      <FlatButton
-        label="Cancel"
-        primary
-        onClick={() => {
-          this.setState(prevState => ({
-            ...prevState,
-            applyForLoanDialog: false,
-            applyForLoanButtonEnabled: true,
-          }));
-        }}
-      />,
-      <FlatButton
-        label="Apply"
-        primary
-        onClick={async () => {
-          const headers = new Headers();
-          headers.append('accesstoken', sessionStorage.getItem('accessToken'));
-          headers.append('Content-Type', 'application/json');
+    // this.dialogActions = [
+    //   <FlatButton
+    //     label="Cancel"
+    //     primary
+    //     onClick={() => {
+    //       this.setState(prevState => ({
+    //         ...prevState,
+    //         applyForLoanDialog: false,
+    //         applyForLoanButtonEnabled: true,
+    //       }));
+    //     }}
+    //   />,
+    //   <FlatButton
+    //     label="Apply"
+    //     primary
+    //     onClick={async () => {
+    //       const headers = new Headers();
+    //       headers.append('accesstoken', sessionStorage.getItem('accessToken'));
+    //       headers.append('Content-Type', 'application/json');
 
-          const loansResponse = await fetchHelper('/api/users/loans', {
-            headers,
-            method: 'POST',
-            body: JSON.stringify({
-              totalAmount: this.state.amount,
-              totalInstallments: this.state.installments,
-            }),
-          });
+    //       const loansResponse = await fetchHelper('/api/users/loans', {
+    //         headers,
+    //         method: 'POST',
+    //         body: JSON.stringify({
+    //           totalAmount: this.state.amount,
+    //           totalInstallments: this.state.installments,
+    //         }),
+    //       });
 
-          if (loansResponse.statusCode === 201) {
-            this.props.addLoan({
-              ...loansResponse.data,
-            });
-          }
+    //       if (loansResponse.statusCode === 201) {
+    //         this.props.addLoan({
+    //           ...loansResponse.data,
+    //         });
+    //       }
 
-          this.setState(prevState => ({
-            ...prevState,
-            applyForLoanDialog: false,
-            applyForLoanButtonEnabled: true,
-          }));
-        }}
-      />,
-    ];
+    //       this.setState(prevState => ({
+    //         ...prevState,
+    //         applyForLoanDialog: false,
+    //         applyForLoanButtonEnabled: true,
+    //       }));
+    //     }}
+    //   />,
+    // ];
   }
 
   handleAmountSlider = (event, newValue) => {
@@ -91,9 +80,40 @@ class LoanHistory extends React.Component {
   }
 
   render = () => (
+    <Grid>
+      <Row>
+        <Col>
+          <Title label="Loans" />
+          {
+            this.props.loans
+              .filter(p => p.outstandingInstallments > 0).length === 0 ?
+                <NewLoan /> : <Emi />
+          }
+          <ReactTable
+            data={this.props.loans}
+            columns={[
+              {
+                Header: 'Status',
+                accessor: 'outstandingInstallments',
+              },
+              {
+                Header: 'Amount left',
+                accessor: 'outstandingAmount',
+              },
+              {
+                Header: 'EMIs left',
+                accessor: 'outstandingInstallments',
+              },
+              {
+                Header: 'Total amount',
+                accessor: 'totalAmount',
+              },
+            ]}
+            showPagination={false}
+            noDataText="You don't have any loans..."
+          />
 
-    <div>
-      {(this.props.loans.length > 0) ?
+          {/* {(this.props.loans.length > 0) ?
         <div>
           <Table>
             <TableHeader
@@ -180,12 +200,14 @@ class LoanHistory extends React.Component {
           label={this.state.installments}
           onChange={this.handleInstallmentsSlider}
         />
-      </Dialog>
-    </div>
+      </Dialog> */}
+        </Col>
+      </Row>
+    </Grid>
   );
 }
 
-LoanHistory.propTypes = {
+Loans.propTypes = {
   loans: PropTypes.arrayOf(PropTypes.shape({
     outstandingAmount: PropTypes.number,
     totalAmount: PropTypes.number,
@@ -199,4 +221,4 @@ LoanHistory.propTypes = {
   payEmi: PropTypes.func.isRequired,
 };
 
-export default LoanHistory;
+export default Loans;

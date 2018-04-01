@@ -1,3 +1,42 @@
 .CircularProgressbar {
   height: 320px;
 }
+
+.Dashboard-background {
+  width: 100vw;
+  height: 100vh;
+}
+
+.Layer1 {
+  background: url('https://images.pexels.com/photos/39811/pexels-photo-39811.jpeg?cs=srgb&dl=forest-haze-landscape-39811.jpg&fm=jpg');
+  height: 100%;
+}
+
+.Layer2 {
+  background: url('https://images.pexels.com/photos/39811/pexels-photo-39811.jpeg?cs=srgb&dl=forest-haze-landscape-39811.jpg&fm=jpg');
+}
+
+.Layer3 {
+  background: url('https://images.pexels.com/photos/39811/pexels-photo-39811.jpeg?cs=srgb&dl=forest-haze-landscape-39811.jpg&fm=jpg');
+}
+
+.Layer1, .Layer2, .Layer3 {
+  background-size: cover;
+  height: 100%;
+}
+
+.Layer1-container, .Layer2-container, .Layer3-container {
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 100%;
+}
+
+.ReactTable {
+  background-color: white;
+}
+
+.Navbar {
+  height: 10%;
+}
+.Layers {
+  height: 90%;
+}
