@@ -116,6 +116,34 @@ class Container extends React.Component {
     });
   }
 
+  applyForLoan = newLoan => new Promise(async (resolve, reject) => {
+    const loansLeftToPayback = this.state.loans
+      .filter(l => l.outstandingInstallments > 0).length;
+
+    if (loansLeftToPayback > 0) {
+      reject(new Error('You have to pay back your loan first.'));
+    }
+
+    const headers = new Headers();
+    headers.append(app.accessToken, sessionStorage.getItem(app.apiToken));
+
+    const response = await fetchHelper('/api/users/loans', {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(newLoan),
+    });
+
+    if (response.statusCode === 201) {
+      this.setState(prevState => ({
+        ...prevState,
+        loans: [...prevState.loans, response.data],
+      }), () => {
+        resolve('Your loan has been approved.');
+      });
+    }
+    resolve('Loan request failed.');
+  });
+
   render = () => (
     <div style={styles.container}>
       <Switch>
@@ -130,6 +158,12 @@ class Container extends React.Component {
               style={styles.main}
               login={async () => { await this.login(); }}
               retrieveProfile={async () => { await this.retrieveProfile(); }}
+              applyForLoan={async (amount, installments) => {
+                await this.applyForLoan({
+                  totalAmount: amount,
+                  totalInstallments: installments,
+                });
+              }}
               socialGraph={this.state.socialGraph}
               isBusy={{
                 value: this.state.isBusy,

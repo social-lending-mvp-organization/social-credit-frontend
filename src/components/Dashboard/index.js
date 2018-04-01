@@ -70,6 +70,9 @@ class Dashboard extends React.Component {
                   <div className="Layer2-container">
                     <Loans
                       loans={this.props.loans}
+                      applyForLoan={async (amount, installments) => {
+                        await this.props.applyForLoan(amount, installments);
+                      }}
                     />
                   </div>
                 </div>
