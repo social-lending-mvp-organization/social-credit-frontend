@@ -1,12 +1,10 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Navbar, Nav } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 import { signUpAuth } from '../../Auth';
 
 import './Login.css';
-import * as styles from './Login.style';
-
 
 class Login extends React.Component {
   login = () => {
@@ -24,46 +22,24 @@ class Login extends React.Component {
     if (isAuthenticated) this.props.history.replace('/');
     return (
       <div className="Login">
-        <Navbar
-          fluid
-          className="bg-primary navbar-dark"
-        >
-          <Navbar.Header>
-            <Navbar.Brand>
-              <a href="/">Social Credit</a>
-            </Navbar.Brand>
-          </Navbar.Header>
-          <Nav pullRight>
-            <Navbar.Link
-              bsStyle="primary"
-              className="btn-margin"
-              onClick={() => this.login()}
-              style={{ cursor: 'pointer' }}
-            >
-              Log In
-            </Navbar.Link>
-          </Nav>
-        </Navbar>
-
         <div className="Login-modal">
-          <p
+          <div
             className="Login-modal-title"
-            style={styles.modalTitle}
           >A new way to apply for loans.
-          </p>
+          </div>
           <div className="Login-modal-container">
             <div className="walkthrough-steps-image" />
-            <div className="Login-steps" >
-              <p style={styles.step}>
+            <ol className="Login-steps" >
+              <li className="Login-steps-item">
                 Connect your social media accounts.
-              </p>
-              <p style={styles.step}>
+              </li>
+              <li className="Login-steps-item">
                 Get your social score.
-              </p >
-              <p style={styles.step}>
+              </li>
+              <li className="Login-steps-item">
                 Apply for your loan.
-              </p>
-            </div>
+              </li>
+            </ol>
           </div>
           <div className="Login-secured-conditions">
             <ul>

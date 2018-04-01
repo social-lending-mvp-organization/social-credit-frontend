@@ -1,57 +1,62 @@
 .Login {
-  background: url('../../media/login-bg.jpg');
-  background-size:cover ;
+  background: url('https://images.pexels.com/photos/39853/woman-girl-freedom-happy-39853.jpeg?cs=srgb&dl=beach-dark-dawn-39853.jpg&fm=jpg');
+  background-size: cover;
   height: 100vh;
   z-index: -1;
 }
 
-.Login-modal{
-  width:100vw;
-  height: 90vh;
-  background-color:rgba(0, 0, 0, 0.7);
-  color: white ;
-  display:flex;
+.Login-modal {
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.Login-modal-container{
-  display:flex;
+.Login-modal-container {
+  display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.Login-modal-title{
-  font-size: 50px;
+.Login-modal-title {
+  font-size: 3em;
 }
 
-.Login-steps{
-  display:flex;
+.Login-steps {
+  display: flex;
   flex-direction: column;
   justify-content: space-around;
-  height:40vh;
-  margin-top: 2vh;
   box-sizing: border-box;
-  color:white;
-  font-size: 30px;
+  color: white;
+  font-size: 1.3em;
+  counter-reset: listItem;
+  list-style-type: none;
 }
 
-.walkthrough-steps-image{
-  background-image:url(../../media/steps.png);
-  background-repeat:no-repeat;
-  background-position:center top;
-  width:38px;
-  height:266px;
-  padding:0 4vh 0 4vw;
-  box-sizing: border-box;
+.Login-steps-item::before {
+  content: counter(listItem, decimal);
+  counter-increment: listItem;
+  font-size: 2em;
+  font-weight: 800;
+  margin-right: 16px;
+
+  position: relative;
+  top: 0;
+  left: 0;
 }
 
-.Login-secured-conditions{
-  margin-top:4vh;
+.walkthrough-steps-image {
+  background-repeat: no-repeat;
+  background-position: center top;
+}
+
+.Login-secured-conditions {
   display: flex;
-  justify-content: center;  
-  width:100vw;
-  color:white;
-  font-size:20px;
+  justify-content: center;
+  width: 100vw;
+  color: white;
+  font-size: 20px;
 }
