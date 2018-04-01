@@ -73,6 +73,9 @@ class Dashboard extends React.Component {
                       applyForLoan={async (amount, installments) => {
                         await this.props.applyForLoan(amount, installments);
                       }}
+                      payEmi={async () => {
+                        await this.props.payEmi();
+                      }}
                     />
                   </div>
                 </div>

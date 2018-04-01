@@ -87,7 +87,12 @@ class Loans extends React.Component {
           {
             this.props.loans
               .filter(p => p.outstandingInstallments > 0).length === 0 ?
-                <NewLoan applyForLoan={async (amount, installments) => { await this.props.applyForLoan(amount, installments); }} /> : <Emi />
+                <NewLoan applyForLoan={async (amount, installments) => { await this.props.applyForLoan(amount, installments); }} />
+              :
+                <Emi
+                  payEmi={async () => { await this.props.payEmi(); }}
+                  loans={this.props.loans}
+                />
           }
           <ReactTable
             data={this.props.loans}

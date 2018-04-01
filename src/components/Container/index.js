@@ -58,20 +58,38 @@ class Container extends React.Component {
     }
   }
 
-  payEmi = (loan) => {
-    this.setState(prevState => ({
-      ...prevState,
-      loans: prevState.loans.map((p) => {
-        if (p !== loan) return p;
-        return {
-          ...p,
-          outstandingInstallments: p.outstandingInstallments - 1,
-          outstandingAmount: p.outstandingAmount -
-            (p.outstandingAmount / p.outstandingInstallments),
-        };
-      }),
-    }));
-  };
+  payEmi = () => new Promise(async (resolve) => {
+    const remainingLoans = this.state.loans.filter(l => l.outstandingAmount > 0);
+    if (remainingLoans.length === 1) {
+      const loan = remainingLoans[0];
+
+      const headers = new Headers();
+      headers.append(app.accessToken, sessionStorage.getItem(app.apiToken));
+
+      const response = await fetchHelper('/api/users/emi', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          amount: loan.outstandingAmount / loan.outstandingInstallments,
+        }),
+      });
+
+      if (response.statusCode === 201) {
+        this.setState(prevState => ({
+          ...prevState,
+          loans: prevState.loans.map((p) => {
+            if (p !== loan) return p;
+            return {
+              ...p,
+              outstandingInstallments: p.outstandingInstallments - 1,
+              outstandingAmount: p.outstandingAmount -
+                (p.outstandingAmount / p.outstandingInstallments),
+            };
+          }),
+        }), () => { resolve('Paid the installment successfully.'); });
+      }
+    }
+  });
 
   retrieveProfile = async () => {
     this.setState(prevState => ({
@@ -93,7 +111,8 @@ class Container extends React.Component {
         isBusy: true,
         message: 'Retrieving loan details...',
       }), async () => {
-        const userProfile = await signUpAuth.userInfo();
+        const userProfile = {};
+        // await signUpAuth.userInfo();
 
         const loanHeaders = new Headers();
         loanHeaders.append(app.accessToken, sessionStorage.getItem(app.apiToken));
@@ -163,6 +182,9 @@ class Container extends React.Component {
                   totalAmount: amount,
                   totalInstallments: installments,
                 });
+              }}
+              payEmi={async () => {
+                await this.payEmi();
               }}
               socialGraph={this.state.socialGraph}
               isBusy={{
