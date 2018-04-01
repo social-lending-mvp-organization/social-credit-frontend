@@ -3,3 +3,8 @@ body {
   font-weight: 100;
   font-size: '1.5em'
 }
+
+@font-face {
+  src: local('./fonts/Komoda.otf');
+  font-family: 'Komoda';
+}
