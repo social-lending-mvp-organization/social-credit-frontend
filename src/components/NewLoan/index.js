@@ -28,14 +28,21 @@ class NewLoan extends React.Component {
       {
         this.state.showNewLoanForm ?
           <div>
-            <label htmlFor="amount">Enter amount: <input
+            <label
+htmlFor="amount"
+
+              className="NewLoan-amount"
+            >Enter amount: <input
               type="number"
               value={this.state.amount}
               onChange={event => this.setState({ ...this.state, amount: event.target.value })}
             />
             </label>
             <br />
-            <label htmlFor="installments">Select number of installments: {this.state.installments}<input
+            <label
+htmlFor="installments"
+              className="NewLoan-installments"
+            >Select number of installments: {this.state.installments}<input
               type="range"
               value={this.state.installments}
               min={12}

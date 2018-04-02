@@ -7,3 +7,7 @@
 .NewLoan-apply-for-loan-apply {
   display: block;
 }
+
+.NewLoan-amount, .NewLoan-installments {
+  font-size: 1.5em;
+}
