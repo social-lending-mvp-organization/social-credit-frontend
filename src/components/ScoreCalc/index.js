@@ -9,7 +9,7 @@ const ScoreCalc = () => (
   <Grid className="ScoreCalc">
     <Row>
       <Col>
-        <Title label="How do we calculate your social Score?" />
+        <Title label="How do we calculate your Social Score?" />
         <Table striped bordered hover>
           <tbody>
             <tr>

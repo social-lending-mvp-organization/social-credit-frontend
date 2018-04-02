@@ -41,8 +41,8 @@ const YourScore = props => (
           </div>
         </div>
         <div>
-          <div>Maximum loan amount</div>
-          <div>
+          <div className="YourScore-MaxAmount-Text">Maximum loan amount</div>
+          <div className="YourScore-MaxAmount">
             {currencyFormatter.format(props.user.maxAmount, { code: 'INR' })}
           </div>
         </div>

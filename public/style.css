@@ -1,7 +1,6 @@
 body {
-  font-family: 'Helvetica Neue','Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'Helvetica Neue', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-weight: 100;
-  font-size: '1.5em'
 }
 
 @font-face {
@@ -13,4 +12,11 @@ button {
   background-color: rgba(0, 0, 0, 0);
   border: 0px solid black;
   cursor: pointer;
+}
+
+@media only screen and (max-width: 800px) {
+  .Navigation-item, .Navigation-brand {
+    display: block;
+    clear: left;
+  }
 }

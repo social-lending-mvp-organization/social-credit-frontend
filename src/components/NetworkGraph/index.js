@@ -70,7 +70,7 @@ class NetworkGraph extends React.Component {
       });
     circle.append('svg:title')
       .text(d => d.name)
-      .style('stroke-width', '2');
+      .style('stroke-width', '4');
     force.on('tick', () => {
       node.attr('transform', d => `translate(${d.x},${d.y})`);
     });
