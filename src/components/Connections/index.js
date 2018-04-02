@@ -3,60 +3,64 @@ import { withRouter } from 'react-router';
 import { Col, Grid, Row, Table } from 'react-bootstrap';
 
 import { connectionsAuth } from '../../Auth';
+import twitterLogo from '../../media/twitter-login.png';
+
+import Title from '../Title';
+import './Connections.css';
 
 const Connections = props => (
   <Grid>
-    <Row><h1>Your connections</h1></Row>
     <hr />
+    <Row><Title label="Your connections" /></Row>
     <Row>
-      <Col lg={12}><h2>Facebook </h2></Col>
+      <Col lg={12}><h3>Facebook </h3></Col>
       <Col lg={12}>
-        <Table striped bordered condensed hover>
+        <Table striped bordered hover>
           <tbody>
             <tr>
-              <td>Visit profile</td>
-              <td><a target="_blank" href={`https://facebook.com/${props.connections.facebook.sub.split('|')[1]}`}>{props.connections.facebook.name}</a></td>
+              <td className="Connections-table-column">Visit profile</td>
+              <td className="Connections-table-column"><a target="_blank" href={`https://facebook.com/${props.connections.facebook.sub.split('|')[1]}`}>{props.connections.facebook.name}</a></td>
             </tr>
             <tr>
-              <td>Number of friends</td>
-              <td>{props.user.breakDown.facebook.friendsCount}</td>
+              <td className="Connections-table-column">Number of friends</td>
+              <td className="Connections-table-column">{props.user.breakDown.facebook.friendsCount}</td>
             </tr>
             <tr>
-              <td>Contribution to Score</td>
-              <td>{props.user.breakDown.facebook.impact}</td>
+              <td className="Connections-table-column">Contribution to Score</td>
+              <td className="Connections-table-column">{props.user.breakDown.facebook.impact}</td>
             </tr>
           </tbody>
         </Table>
       </Col>
     </Row>
-    <hr />
-
     <Row>
-      <Col lg={12}><h2>Twitter </h2></Col>
+      <Col lg={12}><h3>Twitter </h3></Col>
       <Col lg={12}>
         {props.user.breakDown.twitter.screenName !== '' ?
           <Table striped bordered condensed hover>
             <tbody>
               <tr>
-                <td>Direct followers count</td>
-                <td>{props.user.breakDown.twitter.followersCount}</td>
+                <td className="Connections-table-column">Direct followers count</td>
+                <td className="Connections-table-column">{props.user.breakDown.twitter.followersCount}</td>
               </tr>
               <tr>
-                <td>Second degree followers count</td>
-                <td>{props.user.breakDown.twitter.secondFollowersCount}</td>
+                <td className="Connections-table-column">Second degree followers count</td>
+                <td className="Connections-table-column">{props.user.breakDown.twitter.secondFollowersCount}</td>
               </tr>
               <tr>
-                <td>Contribution to Score</td>
-                <td>{props.user.breakDown.twitter.impact}</td>
+                <td className="Connections-table-column">Contribution to Score</td>
+                <td className="Connections-table-column">{props.user.breakDown.twitter.impact}</td>
               </tr>
             </tbody>
           </Table>
           :
-          <img
-            src={require('../../media/twitter-login.png')}
-            onClick={() => { connectionsAuth.login(); }}
-            style={{ cursor: 'pointer' }}
-          />
+          <button onClick={() => { connectionsAuth.login(); }}>
+            <img
+              src={twitterLogo}
+              style={{ cursor: 'pointer' }}
+              alt="twitter login"
+            />
+          </button>
         }
       </Col>
     </Row>

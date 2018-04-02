@@ -111,8 +111,7 @@ class Container extends React.Component {
         isBusy: true,
         message: 'Retrieving loan details...',
       }), async () => {
-        const userProfile = {};
-        // await signUpAuth.userInfo();
+        const userProfile = await signUpAuth.userInfo();
 
         const loanHeaders = new Headers();
         loanHeaders.append(app.accessToken, sessionStorage.getItem(app.apiToken));

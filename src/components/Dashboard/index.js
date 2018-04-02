@@ -55,7 +55,10 @@ class Dashboard extends React.Component {
               >
                 <div className="Layer1">
                   <div className="Layer1-container">
-                    <YourScore user={this.props.user} />
+                    <YourScore
+                      user={this.props.user}
+                      connections={this.props.connections}
+                    />
                   </div>
                 </div>
               </Parallax.Layer>
