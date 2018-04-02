@@ -1,0 +1,9 @@
+.NewLoan-apply-for-loan, .NewLoan-apply-for-loan-apply {
+  font-size: 1.5em;
+  border: 1px solid #897E97;
+  margin-bottom: 16px;
+}
+
+.NewLoan-apply-for-loan-apply {
+  display: block;
+}

@@ -19,7 +19,7 @@ const Connections = props => (
           <tbody>
             <tr>
               <td className="Connections-table-column">Visit profile</td>
-              <td className="Connections-table-column"><a target="_blank" href={`https://facebook.com/${props.connections.facebook.sub.split('|')[1]}`}>{props.connections.facebook.name}</a></td>
+              <td className="Connections-table-column"><a target="_blank" href="www.facebook.com">{props.connections.facebook.name}</a></td>
             </tr>
             <tr>
               <td className="Connections-table-column">Number of friends</td>
@@ -63,6 +63,7 @@ const Connections = props => (
           </button>
         }
       </Col>
+      <Col lg={12}><h3>More social media providers coming soon... </h3></Col>
     </Row>
   </Grid>
 );

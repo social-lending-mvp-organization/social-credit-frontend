@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { app } from '../../lib/constants';
-import { fetchHelper } from '../../lib/fetch-helper';
+import './NewLoan.css';
 
 class NewLoan extends React.Component {
   constructor(props) {
@@ -30,7 +29,7 @@ class NewLoan extends React.Component {
         this.state.showNewLoanForm ?
           <div>
             <label htmlFor="amount">Enter amount: <input
-              type="currency"
+              type="number"
               value={this.state.amount}
               onChange={event => this.setState({ ...this.state, amount: event.target.value })}
             />
@@ -45,14 +44,16 @@ class NewLoan extends React.Component {
               onChange={event => this.setState({ ...this.state, installments: event.target.value })}
             />
             </label>
-            <button onClick={async () => {
+            <button
+              className="NewLoan-apply-for-loan-apply"
+              onClick={async () => {
               await this.props.applyForLoan(this.state.amount, this.state.installments);
             }}
             >Apply
             </button>
           </div>
           :
-          <button onClick={() => this.applyNewLoanClick()}>Apply for a new loan</button>
+          <button className="NewLoan-apply-for-loan" onClick={() => this.applyNewLoanClick()}>Apply for a new loan</button>
       }
     </div >
   );

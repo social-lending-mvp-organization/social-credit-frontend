@@ -7,6 +7,7 @@ import Navigation from '../Navigation';
 import ScoreCalc from '../ScoreCalc';
 import YourScore from '../YourScore';
 import Loans from '../Loans';
+import Loading from '../Loading';
 
 import './Dashboard.css';
 
@@ -33,12 +34,10 @@ class Dashboard extends React.Component {
 
     return (
       !this.props.isBusy.loaded ?
-        <Modal.Dialog>
-          <Modal.Header>
-            <Modal.Title>Hold on</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>{this.props.isBusy.message}</Modal.Body>
-        </Modal.Dialog>
+        <Loading
+          title="Hold on"
+          body={this.props.isBusy.message}
+        />
         :
         <div style={{ height: '100%', overflowY: 'hidden' }}>
           <div className="Navbar">

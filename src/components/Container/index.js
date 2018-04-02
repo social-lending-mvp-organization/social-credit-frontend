@@ -123,12 +123,13 @@ class Container extends React.Component {
           user: userDetailsResponse.data,
           connections: { facebook: userProfile },
           loaded: true,
-        }), async () => {
-          const twitterFollowers = await fetchHelper(`/api/users/twitterGraph?screenName=${this.state.user.breakDown.twitter.screenName}`);
-          this.setState(prevState => ({
-            ...prevState,
-            socialGraph: twitterFollowers,
-          }));
+        }), () => {
+          // const twitterFollowers = await fetchHelper(
+          // `/api/users/twitterGraph?screenName=${this.state.user.breakDown.twitter.screenName}`);
+          // this.setState(prevState => ({
+          //   ...prevState,
+          //   socialGraph: twitterFollowers,
+          // }));
         });
       });
     });

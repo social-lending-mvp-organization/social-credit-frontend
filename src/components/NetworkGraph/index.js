@@ -13,17 +13,17 @@ class NetworkGraph extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [],
+      graph: undefined,
     };
   }
 
   componentDidMount = async () => {
     const width = 500;
-    const height = 750;
+    const height = 300;
 
-    const json = this.props.socialGraph;
+    const json = await fetchHelper(`/api/users/twitterGraph?screenName=${this.props.screenName}`, {});
 
-    const svg = d3.select('svg')
+    const svg = d3.select('#canvas')
       .attr('width', width)
       .attr('height', height);
 
@@ -74,10 +74,14 @@ class NetworkGraph extends React.Component {
     force.on('tick', () => {
       node.attr('transform', d => `translate(${d.x},${d.y})`);
     });
+
+    this.setState({
+      graph: json,
+    });
   }
 
-  getAllPatterns = () => (this.props.socialGraph ?
-    this.props.socialGraph.nodes.map(node =>
+  getAllPatterns = () => (this.state.graph ?
+    this.state.graph.nodes.map(node =>
       this.patternDefinitionTemplate(node.group, node.photo))
     :
     null);
@@ -92,11 +96,11 @@ class NetworkGraph extends React.Component {
 
   render = () => (
     <div style={styles.NetworkGraph} >
-      <svg id="canvas" width="1024" height="1024">
+      <svg id="canvas" height={240} className="NetworkGraph-canvas">
         {this.getAllPatterns()}
       </svg>
       <div className="color-bar" />
-      <p> Number of followers -------------&gt; </p>
+      <p> Number of followers <i className="fas fa-arrow-right" /></p>
     </div>
   )
 }

@@ -1,0 +1,15 @@
+.Emi-Modal-Confirm {
+  font-weight: 400;
+  padding: 16px;
+}
+
+.Emi-Modal-Message {
+  font-weight: 100;
+  padding: 16px;
+}
+
+.Emi-Modal-Pay-Button, .Emi-Modal-Pay-Cancel {
+  font-size: 1.5em;
+  border: 1px solid #897E97;
+  margin: 16px;
+}

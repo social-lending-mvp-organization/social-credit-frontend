@@ -1,8 +1,7 @@
 export const EmiPayEmiButton = {
-  width: '95%',
-  margin: 'auto',
-  justifyContent: 'space-around',
-  display: 'flex',
+  margin: '8px',
+  fontSize: '1.5em',
+  border: '1px solid #897E97',
 };
 
 export const EmiContainer = {

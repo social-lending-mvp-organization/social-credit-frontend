@@ -13,7 +13,10 @@ import './App.css';
 import { access } from 'fs';
 
 class App extends React.Component {
-  constructor(props) { super(props); }
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
   render = () => (
     <Switch>
