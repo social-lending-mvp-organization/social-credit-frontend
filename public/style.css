@@ -8,3 +8,9 @@ body {
   src: local('./fonts/Komoda.otf');
   font-family: 'Komoda';
 }
+
+button {
+  background-color: rgba(0, 0, 0, 0);
+  border: 0px solid black;
+  cursor: pointer;
+}

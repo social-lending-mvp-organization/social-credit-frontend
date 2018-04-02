@@ -164,52 +164,51 @@ class Container extends React.Component {
   });
 
   render = () => (
-    <div style={styles.container}>
-      <Switch>
-        <Route
-          path="/"
-          exact
-          render={props => (
-            <Dashboard
-              user={this.state.user}
-              connections={this.state.connections}
-              loans={this.state.loans}
-              style={styles.main}
-              login={async () => { await this.login(); }}
-              retrieveProfile={async () => { await this.retrieveProfile(); }}
-              applyForLoan={async (amount, installments) => {
-                await this.applyForLoan({
-                  totalAmount: amount,
-                  totalInstallments: installments,
-                });
-              }}
-              payEmi={async () => {
-                await this.payEmi();
-              }}
-              socialGraph={this.state.socialGraph}
-              isBusy={{
-                value: this.state.isBusy,
-                message: this.state.message,
-                loaded: this.state.loaded,
-              }}
-              {...props}
-            />
-          )}
-        />
+    <Switch>
+      <Route
+        path="/"
+        exact
+        render={props => (
+          <Dashboard
+            user={this.state.user}
+            connections={this.state.connections}
+            loans={this.state.loans}
+            style={styles.main}
+            login={async () => { await this.login(); }}
+            retrieveProfile={async () => { await this.retrieveProfile(); }}
+            applyForLoan={async (amount, installments) => {
+              await this.applyForLoan({
+                totalAmount: amount,
+                totalInstallments: installments,
+              });
+            }}
+            payEmi={async () => {
+              await this.payEmi();
+            }}
+            socialGraph={this.state.socialGraph}
+            isBusy={{
+              value: this.state.isBusy,
+              message: this.state.message,
+              loaded: this.state.loaded,
+            }}
+            {...props}
+          />
+        )}
+      />
 
-        <Route
-          path="/connections"
-          render={props => (
-            <Connections
-              user={this.state.user}
-              connections={this.state.connections}
-              retrieveProfile={async () => { await this.retrieveProfile(); }}
-              {...props}
-            />
-          )}
-        />
-      </Switch>
-    </div>
+      <Route
+        path="*"
+        render={props => (
+          // <NotFound
+          //   user={this.state.user}
+          //   connections={this.state.connections}
+          //   retrieveProfile={async () => { await this.retrieveProfile(); }}
+          //   {...props}
+          // />
+          <div>Not found</div>
+        )}
+      />
+    </Switch>
   );
 }
 

@@ -40,7 +40,7 @@ class Dashboard extends React.Component {
           <Modal.Body>{this.props.isBusy.message}</Modal.Body>
         </Modal.Dialog>
         :
-        <div style={{ height: '100%' }}>
+        <div style={{ height: '100%', overflowY: 'hidden' }}>
           <div className="Navbar">
             <Navigation navigate={layer => this.parallax.scrollTo(layer)} />
           </div>

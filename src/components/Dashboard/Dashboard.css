@@ -8,16 +8,16 @@
 }
 
 .Layer1 {
-  background: url('https://images.pexels.com/photos/39811/pexels-photo-39811.jpeg?cs=srgb&dl=forest-haze-landscape-39811.jpg&fm=jpg');
+  /* background: url('https://images.pexels.com/photos/39811/pexels-photo-39811.jpeg?cs=srgb&dl=forest-haze-landscape-39811.jpg&fm=jpg'); */
   height: 100%;
 }
 
 .Layer2 {
-  background: url('https://images.pexels.com/photos/39811/pexels-photo-39811.jpeg?cs=srgb&dl=forest-haze-landscape-39811.jpg&fm=jpg');
+  /* background: url('https://images.pexels.com/photos/39811/pexels-photo-39811.jpeg?cs=srgb&dl=forest-haze-landscape-39811.jpg&fm=jpg'); */
 }
 
 .Layer3 {
-  background: url('https://images.pexels.com/photos/39811/pexels-photo-39811.jpeg?cs=srgb&dl=forest-haze-landscape-39811.jpg&fm=jpg');
+  /* background: url('https://images.pexels.com/photos/39811/pexels-photo-39811.jpeg?cs=srgb&dl=forest-haze-landscape-39811.jpg&fm=jpg'); */
 }
 
 .Layer1, .Layer2, .Layer3 {
@@ -26,7 +26,7 @@
 }
 
 .Layer1-container, .Layer2-container, .Layer3-container {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.1);
   height: 100%;
 }
 
@@ -35,7 +35,7 @@
 }
 
 .Navbar {
-  height: 10%;
+  height: auto;
 }
 .Layers {
   height: 90%;

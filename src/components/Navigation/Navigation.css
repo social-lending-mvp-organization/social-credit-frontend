@@ -1,0 +1,39 @@
+.Navigation,.Navigation-row {
+  margin: 0;
+  padding: 8px 0;
+  height: 100%;
+}
+
+.Navigation-logo {
+  height: 100%; 
+}
+
+.Navigation-brand {
+  display: flex;
+  padding: 0;
+}
+
+.Navigation-brand-name {
+  align-self: center;
+  margin-left: 0;
+}
+
+.Navigation-secondary-items {
+  align-self: center;
+}
+
+.Navigation-item {
+  font-size: 1.5em;
+  margin: 0;
+  padding: 0;
+  padding-left: 8px;
+  font-weight: 100;
+  font-size: 2em;
+}
+
+.Navigation-item {
+  text-decoration: none;
+  padding-left: 8px;
+  font-weight: 800;
+  font-size: 1em;
+}

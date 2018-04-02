@@ -1,56 +1,47 @@
 import React from 'react';
-import { Navbar, Nav } from 'react-bootstrap';
+import { Col, Grid, Navbar, Nav, Row } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 
 import { signUpAuth } from '../../Auth';
 
-import * as styles from './Navigation.style';
+import logo from '../../media/logo.svg';
+import './Navigation.css';
 
 const Navigation = props => (
-  <div className="Navigation">
-    <Navbar
-      fluid
-      className="bg-primary navbar-dark"
-    >
-      <Navbar.Header>
-        <Navbar.Brand>
-          <Navbar.Link
-            onClick={() => props.navigate(0)}
-            style={{
-              padding: '16px auto',
-            }}
-          >Social Credit
-          </Navbar.Link>
-        </Navbar.Brand>
-      </Navbar.Header>
-      <Nav style={styles.navPrimaryItems}>
-
-        <Navbar.Link
-          bsStyle="primary"
-          style={styles.navPrimaryItem}
-          onClick={() => props.navigate(1)}
-        >
-          Loans
-        </Navbar.Link>
-        <Navbar.Link
-          bsStyle="primary"
-          style={styles.navPrimaryItem}
-          onClick={() => props.navigate(2)}
-        >
-          Score Calculation
-        </Navbar.Link>
-      </Nav>
-      <Nav style={styles.navSecondaryItems}>
-        <Navbar.Link
-          bsStyle="primary"
-          className="btn-margin"
-          onClick={() => signUpAuth.logout(props.history)}
-        >
-          Log Out
-        </Navbar.Link>
-      </Nav>
-    </Navbar>
-  </div>
+  <Navbar fluid className="Navigation">
+    <Navbar.Brand>
+      <button
+        onClick={() => props.navigate(0)}
+        className="Navigation-brand"
+      >
+        <img className="Navigation-logo" src={logo} alt="Social credit logo" />
+        <div className="Navigation-brand-name Navigation-item">Social Credit</div>
+      </button>
+    </Navbar.Brand>
+    <Nav pullRight>
+      <button
+        bsStyle="primary"
+        className="Navigation-item"
+        onClick={() => props.navigate(1)}
+      >
+        Loans
+      </button>
+      <button
+        bsStyle="primary"
+        className="Navigation-item"
+        onClick={() => props.navigate(2)}
+      >
+        Score Calculation
+      </button>
+      <button
+        bsStyle="primary"
+        className="Navigation-item"
+        onClick={() => signUpAuth.logout(props.history)}
+      >
+        Log Out
+      </button>
+    </Nav>
+  </Navbar>
 );
 
 export default withRouter(Navigation);
